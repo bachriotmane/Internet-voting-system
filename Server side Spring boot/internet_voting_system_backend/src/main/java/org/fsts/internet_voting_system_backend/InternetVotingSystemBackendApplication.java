@@ -5,6 +5,7 @@ import org.fsts.internet_voting_system_backend.entities.Programme;
 import org.fsts.internet_voting_system_backend.entities.Room;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.entities.Vote;
+import org.fsts.internet_voting_system_backend.security.RsaKeyConfig;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.fsts.internet_voting_system_backend.services.RoomService;
 import org.fsts.internet_voting_system_backend.services.UserService;
@@ -12,6 +13,7 @@ import org.fsts.internet_voting_system_backend.services.VoteService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 import java.time.Instant;
@@ -23,6 +25,7 @@ import java.util.List;
 
 @SpringBootApplication
 @AllArgsConstructor
+@EnableConfigurationProperties(RsaKeyConfig.class)
 public class InternetVotingSystemBackendApplication {
 
 	private final UserService userService;
@@ -36,9 +39,9 @@ public class InternetVotingSystemBackendApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(){
 		return (args)->{
-			UserApp user1 = UserApp.builder().nom("BACHRI").age(22).CIN("AM67679").email("bachriotmane@gmail.com").phoneNumber("0615314354").password("123456").prenom("Otmane").userName("otmane12").build();
-			UserApp user2 = UserApp.builder().nom("ARAMALI").age(32).CIN("V78890").email("aramali@gmail.com").phoneNumber("06778621").password("ar189").prenom("Mohamed").userName("moha123").build();
-			UserApp user3 = UserApp.builder().nom("IDRISSI").age(27).CIN("HN12321").email("idrissi@gmail.com").phoneNumber("068921123").password("id898").prenom("AbdLakrim").userName("idr789").build();
+			UserApp user1 = UserApp.builder().nom("BACHRI").age(22).CIN("AM67679").email("bachriotmane@gmail.com").phoneNumber("0615314354").password("123456").prenom("Otmane").username("otmane12").build();
+			UserApp user2 = UserApp.builder().nom("ARAMALI").age(32).CIN("V78890").email("aramali@gmail.com").phoneNumber("06778621").password("ar189").prenom("Mohamed").username("moha123").build();
+			UserApp user3 = UserApp.builder().nom("IDRISSI").age(27).CIN("HN12321").email("idrissi@gmail.com").phoneNumber("068921123").password("id898").prenom("AbdLakrim").username("idr789").build();
 			userService.saveUser(user1);
 			userService.saveUser(user2);
 			userService.saveUser(user3);
@@ -74,6 +77,7 @@ public class InternetVotingSystemBackendApplication {
 
 			userService.updateUser(user1);
 			userService.updateUser(user2);
+
 
 
 

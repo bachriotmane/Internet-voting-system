@@ -28,4 +28,14 @@ public class RoomServiceImpl implements RoomService {
     public Room updateRoom(Room room) {
         return roomRepository.save(room);
     }
+
+    @Override
+    public List<Room> getUserJoiningRooms(String userId) {
+        return null;
+    }
+
+    @Override
+    public List<Room> getUserCreatedRooms(String userId) {
+        return null;
+    }
 }

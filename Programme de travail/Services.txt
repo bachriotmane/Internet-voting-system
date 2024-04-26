@@ -1,0 +1,6 @@
+Room :
+
+createRoom;
+getRooms;
+getRoomsByUser;
+getCreatedRoomsByUser;

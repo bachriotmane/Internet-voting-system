@@ -8,4 +8,8 @@ public interface RoomService {
     public Room saveRoom(Room room);
     public List<Room> getAllRooms();
     public Room updateRoom(Room room);
+
+    public List<Room> getUserJoiningRooms(String userId);
+    public List<Room> getUserCreatedRooms(String userId);
+
 }
