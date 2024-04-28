@@ -52,10 +52,6 @@ public class UserApp implements UserDetails {
         return Collections.unmodifiableList(authorities);
     }
 
-//    @Override
-//    public String getUsername() {
-//        return username;
-//    }
 
     @Override
     public boolean isAccountNonExpired() {

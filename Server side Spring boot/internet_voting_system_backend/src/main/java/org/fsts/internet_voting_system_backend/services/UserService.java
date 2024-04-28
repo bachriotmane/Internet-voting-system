@@ -5,11 +5,12 @@ import org.fsts.internet_voting_system_backend.DTOs.UserDTO;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.exceptions.ActivationException;
 import org.fsts.internet_voting_system_backend.exceptions.RefreshTokenExpiredException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Map;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     public UserApp saveUser(UserApp userApp);
     public UserApp registerUser( UserApp userApp);
     public UserApp updateUser(UserApp userApp);

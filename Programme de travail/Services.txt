@@ -1,6 +1,8 @@
 Room :
 
-createRoom;
-getRooms;
-getRoomsByUser;
-getCreatedRoomsByUser;
++ createNewRoom With password 
++ getAllRooms
++ getRoomById
+Use :
++ getUserByUserName
++ 

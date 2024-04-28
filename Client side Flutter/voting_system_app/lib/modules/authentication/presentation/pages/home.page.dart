@@ -1,0 +1,35 @@
+// ignore_for_file: avoid_print
+
+import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Slm"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text("Hi Mr ${GetStorage().read("loged-user")}"),
+            ElevatedButton(
+              onPressed: () {
+                GetStorage().erase();
+              },
+              child: const Text("Log out"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
