@@ -9,6 +9,7 @@ final getStorage = GetStorage();
 void main() async {
   init();
   await GetStorage.init();
+  await getStorage.erase();
   runApp(const MyApp());
 }
 
