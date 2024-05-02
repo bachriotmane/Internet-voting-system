@@ -1,4 +1,4 @@
-package org.fsts.internet_voting_system_backend.controllers.auth;
+package org.fsts.internet_voting_system_backend.controllers;
 
 import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.entities.UserApp;

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,10 +36,10 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getCraetedRooms(@PathVariable String uderId)
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getCraetedRooms(@PathVariable("userId") String userId)
     {
-        Optional<List<Room>> rooms = userService.getCreatedRooms(uderId);
+        Optional<List<Room>> rooms = userService.getCreatedRooms(userId);
         if(rooms.isPresent())
         {
             return new ResponseEntity<>(rooms.get(), HttpStatus.OK);
@@ -49,8 +50,8 @@ public class RoomController {
 
 
     }
-    @GetMapping("/search/{key}")
-    public ResponseEntity<?> getRoomsByKey(@PathVariable String key)
+    @GetMapping("/search")
+    public ResponseEntity<?> getRoomsByKey(@RequestParam("key") String key)
     {
         Optional<List<Room>> rooms = roomService.getRoomsByKeyword(key);
        if(rooms.isPresent())

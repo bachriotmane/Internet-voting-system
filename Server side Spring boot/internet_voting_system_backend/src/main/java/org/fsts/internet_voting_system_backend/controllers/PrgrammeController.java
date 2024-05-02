@@ -19,8 +19,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PrgrammeController {
     private final RoomService roomService;
-@GetMapping("/roomId")
-    public ResponseEntity<?> getProgrammesByRoom(@PathVariable String roomId)
+@GetMapping("/{roomId}")
+    public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
     {
         Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
 
