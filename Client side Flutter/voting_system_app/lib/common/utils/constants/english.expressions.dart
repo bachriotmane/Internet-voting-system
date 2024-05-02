@@ -1,4 +1,4 @@
 class EnglishExpressions {
-  static const registerExpression = "Be Your Own Boss. Get Paid Fast";
-  static const loginExpression = "Back to Work. Login Now";
+  static const registerExpression = "Make Your Voice Heard. Register Now!";
+  static const loginExpression = "Ready to Vote? Login Here!";
 }
