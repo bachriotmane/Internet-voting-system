@@ -1,5 +1,6 @@
 package org.fsts.internet_voting_system_backend.DTOs;
 
+import java.util.Date;
 import java.util.List;
 
 public record ProgrammeDTO(
@@ -7,6 +8,7 @@ public record ProgrammeDTO(
         String programmeTitle,
         String programmeDescription,
         String programmeRoom,
+        Date creationDate,
         List<String> voteIds
 ) {
 }
