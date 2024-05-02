@@ -10,21 +10,20 @@ import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController("/rooms")
 @AllArgsConstructor
 public class RoomController {
-    public final UserService userService;
-    public final RoomService roomService;
-    public final RoomMapper roomMapper;
+    private final UserService userService;
+    private final RoomService roomService;
+    private final RoomMapper roomMapper;
+
 
     @GetMapping("/")
     public ResponseEntity<?>  getAllRooms(){
@@ -52,8 +51,6 @@ public class RoomController {
         else {
             return new ResponseEntity<>("there is no rooms with this user id ",HttpStatus.NOT_FOUND);
         }
-
-
     }
     @GetMapping("/search")
     public ResponseEntity<?> getRoomsByKey(@RequestParam("key") String key)
@@ -68,7 +65,15 @@ public class RoomController {
        else {
            return new ResponseEntity<>("there is no rooms with the title ",HttpStatus.NOT_FOUND);
        }
+    }
+    @PostMapping("/")
+    public RoomDTO addNewRoom(@RequestBody RoomDTO roomDTO){
+        Room savedRoom = roomService.saveRoom(roomMapper.fromDTO(roomDTO));
+        return roomMapper.fromEntity(savedRoom);
+    }
 
-
+    @GetMapping("/joining/{userId}")
+    public List<RoomDTO> getJoiningUserRoom(@PathVariable String userId){
+        return roomService.getUserJoiningRooms(userId).stream().map(roomMapper::fromEntity).collect(Collectors.toList());
     }
 }

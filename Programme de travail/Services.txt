@@ -28,10 +28,10 @@ IDRISSI :
 +,getRoomById
 +,getProgrammeByKeyword(key),==>,Title
 BACHRI :
-+,getVotesProgramme(int,progId);
-+,voterProgramme(int,idProgramme);
-+,addNewRoom
-+,getJoiningUserRooms(userId)
++ Done : getVotesProgramme(int,progId);
++ Done voterProgramme(int,idProgramme);
++ Done : addNewRoom
++ Done : getJoiningUserRooms(userId)
 
 
 
