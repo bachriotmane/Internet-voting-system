@@ -32,9 +32,9 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initState();
-    return Scaffold(
-      body: SafeArea(
-        child: BlocConsumer<RegisterBloc, RegisterState>(
+    return SafeArea(
+      child: Scaffold(
+        body: BlocConsumer<RegisterBloc, RegisterState>(
           bloc: _registerBloc,
           listenWhen: (previous, current) => current is RegisterActionState,
           buildWhen: (previous, current) => current is! RegisterActionState,
