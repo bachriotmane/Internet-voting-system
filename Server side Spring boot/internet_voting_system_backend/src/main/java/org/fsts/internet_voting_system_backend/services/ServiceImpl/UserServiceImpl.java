@@ -3,6 +3,7 @@ package org.fsts.internet_voting_system_backend.services.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.DTOs.AuthenticationDTO;
 import org.fsts.internet_voting_system_backend.entities.RoleApp;
+import org.fsts.internet_voting_system_backend.entities.Room;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.entities.Validation;
 import org.fsts.internet_voting_system_backend.enums.UserRole;
@@ -21,10 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -95,6 +93,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserApp getUserById(String userId) {
         return userAppRepository.findById(userId).orElseThrow(()->new RuntimeException("User with id "+ userId+" not found"));
+    public Optional<List<Room>> getCreatedRooms(String userId) {
+        return userAppRepository.getCreatedRoomsByUserId(userId);
     }
 
 
