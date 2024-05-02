@@ -52,8 +52,6 @@ public class RoomController {
         else {
             return new ResponseEntity<>("there is no rooms with this user id ",HttpStatus.NOT_FOUND);
         }
-
-
     }
     @GetMapping("/search")
     public ResponseEntity<?> getRoomsByKey(@RequestParam("key") String key)
@@ -68,7 +66,5 @@ public class RoomController {
        else {
            return new ResponseEntity<>("there is no rooms with the title ",HttpStatus.NOT_FOUND);
        }
-
-
     }
 }

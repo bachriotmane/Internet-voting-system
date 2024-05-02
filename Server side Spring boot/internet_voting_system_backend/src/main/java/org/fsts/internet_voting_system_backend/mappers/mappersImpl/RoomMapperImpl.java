@@ -8,10 +8,12 @@ import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.mappers.RoomMapper;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.fsts.internet_voting_system_backend.services.UserService;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 @AllArgsConstructor
+@Component
 public class RoomMapperImpl implements RoomMapper {
     private final UserService userService;
     private final ProgrammeService programmeService;
