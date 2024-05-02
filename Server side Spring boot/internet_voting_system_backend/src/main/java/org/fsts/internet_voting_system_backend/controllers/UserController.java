@@ -2,6 +2,7 @@ package org.fsts.internet_voting_system_backend.controllers;
 
 import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
+import org.fsts.internet_voting_system_backend.mappers.UserMapper;
 import org.fsts.internet_voting_system_backend.repositories.UserAppRepository;
 import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserAppRepository userService;
+    private final UserMapper userMapper;
 
 
     @GetMapping("/{username}")
@@ -24,7 +26,8 @@ public class UserController {
 
         if(userApp != null)
         {
-            return new ResponseEntity<>(userApp, HttpStatus.OK);
+
+            return new ResponseEntity<>(userMapper.fromEntity(userApp), HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>("user not found !",HttpStatus.NOT_FOUND);

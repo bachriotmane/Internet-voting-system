@@ -1,8 +1,11 @@
 package org.fsts.internet_voting_system_backend.controllers;
 
 import lombok.AllArgsConstructor;
+import org.fsts.internet_voting_system_backend.DTOs.ProgrammeDTO;
 import org.fsts.internet_voting_system_backend.DTOs.VoteDTO;
 import org.fsts.internet_voting_system_backend.entities.Vote;
+import org.fsts.internet_voting_system_backend.mappers.ProgrammeMapper;
+import org.fsts.internet_voting_system_backend.mappers.RoomMapper;
 import org.fsts.internet_voting_system_backend.mappers.VoteMapper;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +34,7 @@ import java.util.Optional;
 public class PrgrammeController {
     private final ProgrammeService programmeService;
     private final VoteMapper voteMapper;
+    private final ProgrammeMapper programmeMapper;
 
     @GetMapping("/votes/{id}")
     public List<VoteDTO> getVotesProgramme(@PathVariable String id){
@@ -44,7 +48,8 @@ public class PrgrammeController {
 
             if(programmes.isPresent())
             {
-                return new ResponseEntity<>(programmes.get(), HttpStatus.OK);
+                List<ProgrammeDTO> programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
+                return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);
             }
             else{
                 return new ResponseEntity<>("there no programme in this room *_*",HttpStatus.NOT_FOUND);
