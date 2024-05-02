@@ -23,6 +23,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room getRoomById(String roomId) {
+        return roomRepository.findById(roomId).orElseThrow(()->new RuntimeException("Room with id"+roomId+" not found"));
+    }
+
+    @Override
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }

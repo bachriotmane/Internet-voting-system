@@ -23,4 +23,9 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     public List<Programme> getAllProgrammes() {
         return programmeRepository.findAll();
     }
+
+    @Override
+    public Programme getProgrammeById(String progId) {
+        return programmeRepository.findById(progId).orElseThrow(()->new RuntimeException("Programme with id "+progId+" not found"));
+    }
 }

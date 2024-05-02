@@ -91,6 +91,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserApp getUserById(String userId) {
+        return userAppRepository.findById(userId).orElseThrow(()->new RuntimeException("User with id "+ userId+" not found"));
     public Optional<List<Room>> getCreatedRooms(String userId) {
         return userAppRepository.getCreatedRoomsByUserId(userId);
     }

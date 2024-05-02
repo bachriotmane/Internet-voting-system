@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface RoomService {
     public Room saveRoom(Room room);
+    public Room getRoomById(String roomId);
     public List<Room> getAllRooms();
     public Room updateRoom(Room room);
 
