@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.entities.Programme;
 import org.fsts.internet_voting_system_backend.entities.Room;
 import org.fsts.internet_voting_system_backend.repositories.RoomRepository;
+import org.fsts.internet_voting_system_backend.repositories.UserAppRepository;
 import org.fsts.internet_voting_system_backend.services.RoomService;
+import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
+    private final UserService userService;
     @Override
     public Room saveRoom(Room room) {
         room.setRoomId(UUID.randomUUID().toString());
@@ -39,7 +43,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getUserJoiningRooms(String userId) {
-        return null;
+        return userService.getUserById(userId).getJoiningRooms();
     }
 
     @Override
