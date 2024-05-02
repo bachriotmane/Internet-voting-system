@@ -31,23 +31,23 @@ import java.util.Optional;
 public class PrgrammeController {
     private final ProgrammeService programmeService;
     private final VoteMapper voteMapper;
-
+    private final RoomService roomService;
     @GetMapping("/votes/{id}")
     public List<VoteDTO> getVotesProgramme(@PathVariable String id){
         return programmeService.getProgrammeById(id).getVoteList().stream().map(voteMapper::fromEntity).collect(Collectors.toList());
     }
-    private final RoomService roomService;
-        @GetMapping("/{roomId}")
-        public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
-        {
-            Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
 
-            if(programmes.isPresent())
-            {
-                return new ResponseEntity<>(programmes.get(), HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity<>("there no programme in this room *_*",HttpStatus.NOT_FOUND);
-            }
+    @GetMapping("/{roomId}")
+    public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
+    {
+        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
+
+        if(programmes.isPresent())
+        {
+            return new ResponseEntity<>(programmes.get(), HttpStatus.OK);
         }
+        else{
+            return new ResponseEntity<>("there no programme in this room *_*",HttpStatus.NOT_FOUND);
+        }
+    }
 }
