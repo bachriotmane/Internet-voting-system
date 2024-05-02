@@ -9,12 +9,12 @@ final getStorage = GetStorage();
 void main() async {
   init();
   await GetStorage.init();
+  await getStorage.erase();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

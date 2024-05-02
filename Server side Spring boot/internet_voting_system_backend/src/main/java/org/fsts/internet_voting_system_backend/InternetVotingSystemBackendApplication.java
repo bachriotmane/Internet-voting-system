@@ -40,7 +40,7 @@ public class InternetVotingSystemBackendApplication {
 	CommandLineRunner commandLineRunner(){
 		return (args)->{
 			UserApp user1 = UserApp.builder().nom("BACHRI").age(22).CIN("AM67679").email("bachriotmane@gmail.com").phoneNumber("0615314354").password("123456").prenom("Otmane").username("otmane12").build();
-			UserApp user2 = UserApp.builder().nom("ARAMALI").age(32).CIN("V78890").email("aramali@gmail.com").phoneNumber("06778621").password("ar189").prenom("Mohamed").username("moha123").build();
+			UserApp user2 = UserApp.builder().nom("ARAMALI").age(32).CIN("V78890").email("aramali@gmail.com").phoneNumber("06778621").password("aramali").prenom("Mohamed").username("moha123").build();
 			UserApp user3 = UserApp.builder().nom("IDRISSI").age(27).CIN("HN12321").email("idrissi@gmail.com").phoneNumber("068921123").password("id898").prenom("AbdLakrim").username("idr789").build();
 			userService.saveUser(user1);
 			userService.saveUser(user2);

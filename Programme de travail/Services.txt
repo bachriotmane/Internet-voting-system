@@ -1,8 +1,37 @@
-Room :
-
-+ createNewRoom With password 
 + getAllRooms
++ getRoomByKeyword
 + getRoomById
-Use :
-+ getUserByUserName
-+ 
++ addNewRoom
++ getUserByUsername
++ getCreatedUserRooms(userId)
++ getJoiningUserRooms(userId)
++ editUserInfo()
++ addProgrammeToRoom(userId, programme);
++ getProgrammeByKeyword(key) ==> Title
++ getProgrammeByDate(date)
++ getProgrammesAssRoom(roomId);
++ voterProgramme(int idProgramme);
++ getVotesProgramme(int progId);
+
+
+
+ARAMALI:
++,getCreatedUserRooms(userId)
++,getRoomByKeyword
++,getUserByUsername
++,getProgrammesAssRoom(roomId);
++ getAllRooms
+IDRISSI :
++ editUserInfo()
++,getProgrammeByDate(date)
++,addProgrammeToRoom(userId,programme);
++,getRoomById
++,getProgrammeByKeyword(key),==>,Title
+BACHRI :
++,getVotesProgramme(int,progId);
++,voterProgramme(int,idProgramme);
++,addNewRoom
++,getJoiningUserRooms(userId)
+
+
+
