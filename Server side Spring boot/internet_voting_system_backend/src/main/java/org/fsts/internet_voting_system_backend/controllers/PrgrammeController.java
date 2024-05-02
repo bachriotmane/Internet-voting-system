@@ -3,30 +3,21 @@ package org.fsts.internet_voting_system_backend.controllers;
 import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.DTOs.ProgrammeDTO;
 import org.fsts.internet_voting_system_backend.DTOs.VoteDTO;
-import org.fsts.internet_voting_system_backend.entities.Vote;
+import org.fsts.internet_voting_system_backend.entities.Room;
 import org.fsts.internet_voting_system_backend.mappers.ProgrammeMapper;
-import org.fsts.internet_voting_system_backend.mappers.RoomMapper;
 import org.fsts.internet_voting_system_backend.mappers.VoteMapper;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import jakarta.servlet.http.HttpServlet;
-import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.fsts.internet_voting_system_backend.entities.Programme;
-import org.fsts.internet_voting_system_backend.repositories.RoomRepository;
 import org.fsts.internet_voting_system_backend.services.RoomService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/programmes")
 @RestController
@@ -55,5 +46,24 @@ public class PrgrammeController {
             else{
                 return new ResponseEntity<>("there no programme in this room *_*",HttpStatus.NOT_FOUND);
             }
+    }
+
+    @GetMapping("/byDateAndRoom/{roomId}")
+    public List<ProgrammeDTO> getProgrammeByDateAndRoom(
+            @PathVariable String roomId,
+            @RequestParam("date")
+            @DateTimeFormat(pattern = "yyyy-MM-dd")
+            LocalDate date
+    )
+    {
+        Room room = roomService.getRoomById(roomId);
+        List<Programme> programmes = programmeService.findProgrammeByDateAndRoom(date, room);
+        List<ProgrammeDTO> programmeDTOs = new ArrayList<>();
+        if (programmes != null) {
+            programmeDTOs = programmes.stream().map(programmeMapper::fromEntity).toList();
         }
+        return programmeDTOs;
+    }
+
+
 }

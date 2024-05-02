@@ -6,6 +6,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Programme {
     private String programmeId;
     private String programmeTitle;
     private String programmeDescription;
-    private Date creationDate;
+    private LocalDate creationDate;
 
     @ManyToOne
     private Room programmeRoom;
