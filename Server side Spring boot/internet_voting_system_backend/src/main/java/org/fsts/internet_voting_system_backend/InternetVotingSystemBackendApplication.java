@@ -89,13 +89,23 @@ public class InternetVotingSystemBackendApplication {
 			programmeService.saveProgramme(programme2);
 			programmeService.saveProgramme(programme3);
 
+			List<Vote> votes = new ArrayList<>();
+
 			Vote vote1 =  Vote.builder().dateVote(new Date()).programme(programme1).voter(user1).build();
 			Vote vote2 =  Vote.builder().dateVote(new Date()).programme(programme1).voter(user2).build();
 			Vote vote3 =  Vote.builder().dateVote(new Date()).programme(programme2).voter(user3).build();
 
-			voteService.saveVote(vote1);
-			voteService.saveVote(vote2);
+			vote1 = voteService.saveVote(vote1);
+			vote2 = voteService.saveVote(vote2);
 			voteService.saveVote(vote3);
+			votes.add(vote1);
+			votes.add(vote2);
+
+			programme1.setVoteList(votes);
+			List<Programme> programmes  = new ArrayList<>();
+			programmes.add(programme1);
+			vote1.setProgramme(programme1);
+			programmeService.saveProgramme(programme1);
 
 		};
 	}

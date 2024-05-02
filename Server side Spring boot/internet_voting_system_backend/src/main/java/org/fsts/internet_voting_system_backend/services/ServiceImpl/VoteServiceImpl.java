@@ -23,4 +23,9 @@ public class VoteServiceImpl implements VoteService {
     public List<Vote> getAllVotes() {
         return voteRepository.findAll();
     }
+
+    @Override
+    public Vote getVoteById(String voteId) {
+        return voteRepository.findById(voteId).orElseThrow(()->new RuntimeException("Vote with id " + voteId+" not found"));
+    }
 }

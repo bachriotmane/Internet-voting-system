@@ -92,6 +92,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return jwtService.generateToken(authenticationDTO);
     }
 
+    @Override
+    public UserApp getUserById(String userId) {
+        return userAppRepository.findById(userId).orElseThrow(()->new RuntimeException("User with id "+ userId+" not found"));
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

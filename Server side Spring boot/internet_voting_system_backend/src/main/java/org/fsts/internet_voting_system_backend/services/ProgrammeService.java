@@ -7,4 +7,5 @@ import java.util.List;
 public interface ProgrammeService {
     public Programme saveProgramme(Programme programme);
     public List<Programme> getAllProgrammes();
+    public Programme getProgrammeById(String progId);
 }

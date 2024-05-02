@@ -17,4 +17,5 @@ public interface UserService extends UserDetailsService {
     public List<UserApp> getAllUsers();
     public void activationAccount(Map<String, String> code) throws ActivationException;
     public Map <String,String> connexion(AuthenticationDTO authenticationDTO) throws RefreshTokenExpiredException;
+    public UserApp getUserById(String userId);
 }

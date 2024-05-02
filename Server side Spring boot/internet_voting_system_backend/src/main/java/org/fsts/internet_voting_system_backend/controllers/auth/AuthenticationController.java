@@ -6,7 +6,7 @@ import org.fsts.internet_voting_system_backend.DTOs.UserDTO;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.exceptions.ActivationException;
 import org.fsts.internet_voting_system_backend.exceptions.RefreshTokenExpiredException;
-import org.fsts.internet_voting_system_backend.mappers.UserMapper;
+import org.fsts.internet_voting_system_backend.mappers.mappersImpl.UserMapperImpl;
 import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,7 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthenticationController {
     private UserService userService;
-    private final UserMapper userMapper = new UserMapper();
+    private final UserMapperImpl userMapper;
     @PostMapping("/register")
     public UserApp registerUser(@RequestBody UserDTO userApp){
         return userService.registerUser(userMapper.fromDTO(userApp));
