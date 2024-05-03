@@ -10,21 +10,20 @@ import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-
-@RestController("/rooms")
+@RestController
+@RequestMapping("/rooms")
 @AllArgsConstructor
 public class RoomController {
-    public final UserService userService;
-    public final RoomService roomService;
-    public final RoomMapper roomMapper;
+    private final UserService userService;
+    private final RoomService roomService;
+    private final RoomMapper roomMapper;
+
 
     @GetMapping("/")
     public ResponseEntity<?>  getAllRooms(){
@@ -37,6 +36,19 @@ public class RoomController {
         }
         else {
             return new ResponseEntity<>("No Rooms Available ",HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?>  getAllRoomById(@PathVariable String id ){
+        Room  room = roomService.getRoomById(id);
+
+        if(room !=null )
+        {
+            RoomDTO roomDTO = roomMapper.fromEntity(room);
+            return new  ResponseEntity<>(roomDTO,HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("No Room with id : "+id+"Available ",HttpStatus.NOT_FOUND);
         }
     }
 
@@ -66,5 +78,27 @@ public class RoomController {
        else {
            return new ResponseEntity<>("there is no rooms with the title ",HttpStatus.NOT_FOUND);
        }
+    }
+    @PostMapping("/")
+    public RoomDTO addNewRoom(@RequestBody RoomDTO roomDTO){
+        Room savedRoom = roomService.saveRoom(roomMapper.fromDTO(roomDTO));
+        return roomMapper.fromEntity(savedRoom);
+    }
+
+    @GetMapping("/joining/{userId}")
+    public List<RoomDTO> getJoiningUserRoom(@PathVariable String userId){
+        return roomService.getUserJoiningRooms(userId).stream().map(roomMapper::fromEntity).collect(Collectors.toList());
+    }
+    @PostMapping("/addProgramme/{roomId}")
+    public ResponseEntity<?> addProgrammeToRoom(
+            @PathVariable String roomId,
+            @RequestParam("programmeId") String programmeId
+    ){
+        Room room =roomService.addProgrammeToRoom(roomId,programmeId);
+        if(room==null)
+            return new ResponseEntity<>("room or programme does not exist ",HttpStatus.NOT_FOUND);
+        RoomDTO roomDTO=roomMapper.fromEntity(room);
+        return new ResponseEntity<>(roomDTO,HttpStatus.OK);
+
     }
 }

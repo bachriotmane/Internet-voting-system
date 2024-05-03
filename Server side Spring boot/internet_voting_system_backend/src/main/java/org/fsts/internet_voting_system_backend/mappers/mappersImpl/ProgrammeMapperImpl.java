@@ -27,6 +27,7 @@ public class ProgrammeMapperImpl implements ProgrammeMapper {
         programme.setProgrammeDescription(programme.getProgrammeDescription());
         Room room = roomService.getRoomById(programmeDTO.programmeRoom());
         programme.setProgrammeRoom(room);
+        programme.setCreationDate(programmeDTO.creationDate());
         List<Vote> voteList= new ArrayList<>();
         for (String voteId : programmeDTO.voteIds()){
             Vote vote = voteService.getVoteById(voteId);
@@ -42,6 +43,6 @@ public class ProgrammeMapperImpl implements ProgrammeMapper {
         for(Vote vote : programme.getVoteList()){
             voteIds.add(vote.getVoteId());
         }
-        return new ProgrammeDTO(programme.getProgrammeId(), programme.getProgrammeTitle(), programme.getProgrammeDescription(), programme.getProgrammeRoom().getRoomId(), voteIds);
+        return new ProgrammeDTO(programme.getProgrammeId(), programme.getProgrammeTitle(), programme.getProgrammeDescription(), programme.getProgrammeRoom().getRoomId(),programme.getCreationDate(), voteIds);
     }
 }
