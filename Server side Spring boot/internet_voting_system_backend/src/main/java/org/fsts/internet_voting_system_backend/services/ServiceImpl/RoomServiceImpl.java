@@ -23,7 +23,6 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserService userService;
     private final ProgrammeService programmeService;
-    private final RoomService roomService;
     @Override
     public Room saveRoom(Room room) {
         room.setRoomId(UUID.randomUUID().toString());
@@ -71,14 +70,14 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room addProgrammeToRoom(String roomId, String programmeId) {
-        Room room=roomService.getRoomById(roomId);
+        Room room=this.getRoomById(roomId);
         Programme programme=programmeService.getProgrammeById(programmeId);
         if (room == null || programme == null) {
             return null;
         }
         room.getProgrammeList().add(programme);
         programme.setProgrammeRoom(room);
-        roomService.saveRoom(room);
+        this.saveRoom(room);
         programmeService.saveProgramme(programme);
         return room;
     }
