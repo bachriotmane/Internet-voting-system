@@ -38,6 +38,19 @@ public class RoomController {
             return new ResponseEntity<>("No Rooms Available ",HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?>  getAllRoomById(@PathVariable String id ){
+        Room  room = roomService.getRoomById(id);
+
+        if(room !=null )
+        {
+            RoomDTO roomDTO = roomMapper.fromEntity(room);
+            return new  ResponseEntity<>(roomDTO,HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("No Room with id : "+id+"Available ",HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getCraetedRooms(@PathVariable("userId") String userId)
@@ -75,5 +88,17 @@ public class RoomController {
     @GetMapping("/joining/{userId}")
     public List<RoomDTO> getJoiningUserRoom(@PathVariable String userId){
         return roomService.getUserJoiningRooms(userId).stream().map(roomMapper::fromEntity).collect(Collectors.toList());
+    }
+    @PostMapping("/addProgramme/{roomId}")
+    public ResponseEntity<?> addProgrammeToRoom(
+            @PathVariable String roomId,
+            @RequestParam("programmeId") String programmeId
+    ){
+        Room room =roomService.addProgrammeToRoom(roomId,programmeId);
+        if(room==null)
+            return new ResponseEntity<>("room or programme does not exist ",HttpStatus.NOT_FOUND);
+        RoomDTO roomDTO=roomMapper.fromEntity(room);
+        return new ResponseEntity<>(roomDTO,HttpStatus.OK);
+
     }
 }
