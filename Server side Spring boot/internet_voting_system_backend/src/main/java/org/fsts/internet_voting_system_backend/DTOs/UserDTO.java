@@ -1,7 +1,9 @@
 package org.fsts.internet_voting_system_backend.DTOs;
 
-import java.util.Date;
+import lombok.Builder;
 
+import java.util.Date;
+@Builder
 public record UserDTO(
         String userId,
         String username,

@@ -24,6 +24,16 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public  UserDTO fromEntity(UserApp userAbs){
-        throw new RuntimeException("Otmane : I'm sorry I do not have time to implement this function try to do it! :)");
+        return  UserDTO.builder()
+                .userId(userAbs.getUserId())
+                .username(userAbs.getUsername())
+                .age(userAbs.getAge())
+                .CIN(userAbs.getCIN())
+                .email(userAbs.getEmail())
+                .nom(userAbs.getNom())
+                .phoneNumber(userAbs.getPhoneNumber())
+                .prenom(userAbs.getPrenom())
+                .build();
     }
+
 }

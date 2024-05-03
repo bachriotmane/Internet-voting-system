@@ -24,11 +24,9 @@ public class RoomController {
     private final RoomService roomService;
     private final RoomMapper roomMapper;
 
-
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?>  getAllRooms(){
         Optional<List<Room>>  rooms = roomService.getAllRoom();
-
         if(rooms.isPresent())
         {
             List<RoomDTO> roomDTOS = rooms.get().stream().map(roomMapper::fromEntity).toList();
@@ -52,11 +50,11 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<?> getCraetedRooms(@PathVariable("userId") String userId)
     {
         Optional<List<Room>> rooms = userService.getCreatedRooms(userId);
-        if(rooms.isPresent())
+        if(rooms.isPresent() && !rooms.get().isEmpty())
         {
             List<RoomDTO> roomDTOS = rooms.get().stream().map(roomMapper::fromEntity).toList();
             return new ResponseEntity<>(roomDTOS, HttpStatus.OK);
@@ -69,7 +67,7 @@ public class RoomController {
     public ResponseEntity<?> getRoomsByKey(@RequestParam("key") String key)
     {
         Optional<List<Room>> rooms = roomService.getRoomsByKeyword(key);
-       if(rooms.isPresent())
+       if(rooms.isPresent() && !rooms.get().isEmpty())
        {
 
            List<RoomDTO> roomDTOS = rooms.get().stream().map(roomMapper::fromEntity).toList();

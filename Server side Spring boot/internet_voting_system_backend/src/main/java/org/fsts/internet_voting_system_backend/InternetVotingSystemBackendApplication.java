@@ -54,9 +54,9 @@ public class InternetVotingSystemBackendApplication {
 			LocalDateTime localDateTime = LocalDateTime.of(2024,04,26,17,22);
 			Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 
-			Room room1 = Room.builder().code("4565").roomDescription("room1 desc").createAt(new Date()).title("room2").expireAt(Date.from(instant)).startAt(new Date()).build();
+			Room room1 = Room.builder().code("4565").roomDescription("room1 desc").createAt(new Date()).title("room1").expireAt(Date.from(instant)).startAt(new Date()).build();
 			Room room2 = Room.builder().code("9802").roomDescription("room2 desc").createAt(new Date()).title("room2").expireAt(Date.from(instant)).startAt(new Date()).build();
-			Room room3 = Room.builder().code("1235").roomDescription("room2 desc").createAt(new Date()).title("room2").expireAt(Date.from(instant)).startAt(new Date()).build();
+			Room room3 = Room.builder().code("1235").roomDescription("room2 desc").createAt(new Date()).title("room3").expireAt(Date.from(instant)).startAt(new Date()).build();
 			room1.setRoomCreator(user1);
 			room2.setRoomCreator(user2);
 			room3.setRoomCreator(user3);
@@ -81,14 +81,20 @@ public class InternetVotingSystemBackendApplication {
 
 
 
-			Programme programme1 = Programme.builder().programmeDescription("Prog1 Desc").programmeTitle("Prog1").build();
-			Programme programme2 = Programme.builder().programmeDescription("Prog2 Desc").programmeTitle("Prog2").build();
-			Programme programme3 = Programme.builder().programmeDescription("Prog3 Desc").programmeTitle("Prog3").build();
+			Programme programme1 = Programme.builder().programmeDescription("Prog1 Desc").programmeTitle("Prog1").programmeRoom(room1).build();
+			Programme programme2 = Programme.builder().programmeDescription("Prog2 Desc").programmeTitle("Prog2").programmeRoom(room1).build();
+			Programme programme3 = Programme.builder().programmeDescription("Prog3 Desc").programmeTitle("Prog3").programmeRoom(room1).build();
 
 			programmeService.saveProgramme(programme1);
 			programmeService.saveProgramme(programme2);
 			programmeService.saveProgramme(programme3);
 
+			//add programmes to room1
+			List<Programme> programmes = new ArrayList<>();
+			programmes.add(programme1);
+			programmes.add(programme2);
+			programmes.add(programme3);
+			room1.setProgrammeList(programmes);
 			List<Vote> votes = new ArrayList<>();
 
 			Vote vote1 =  Vote.builder().dateVote(new Date()).programme(programme1).voter(user1).build();
@@ -102,7 +108,6 @@ public class InternetVotingSystemBackendApplication {
 			votes.add(vote2);
 
 			programme1.setVoteList(votes);
-			List<Programme> programmes  = new ArrayList<>();
 			programmes.add(programme1);
 			vote1.setProgramme(programme1);
 			programmeService.saveProgramme(programme1);

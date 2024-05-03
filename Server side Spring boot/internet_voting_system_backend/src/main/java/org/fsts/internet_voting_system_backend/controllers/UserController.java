@@ -24,10 +24,9 @@ public class UserController {
     public ResponseEntity<?> getUserByUsername(@PathVariable String username)
     {
         UserApp userApp = userAppRepository.findUserAppByUsername(username);
-
         if(userApp != null)
         {
-            return new ResponseEntity<>(userApp, HttpStatus.OK);
+            return new ResponseEntity<>(userMapper.fromEntity(userApp), HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>("user not found !",HttpStatus.NOT_FOUND);

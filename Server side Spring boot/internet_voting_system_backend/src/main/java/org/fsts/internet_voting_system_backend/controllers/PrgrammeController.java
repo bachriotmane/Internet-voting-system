@@ -48,7 +48,7 @@ public class PrgrammeController {
 //        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
 //>>>>>>> 835fc5c290981c7854e0f0d492479b5efb35d210
 
-            if(programmes.isPresent())
+            if(programmes.isPresent() && !programmes.get().isEmpty() )
             {
                 List<ProgrammeDTO> programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
                 return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);

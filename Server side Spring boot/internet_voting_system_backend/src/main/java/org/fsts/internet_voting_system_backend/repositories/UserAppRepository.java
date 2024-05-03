@@ -9,5 +9,4 @@ import java.util.Optional;
 
 public interface UserAppRepository extends JpaRepository<UserApp,String> {
     public UserApp findUserAppByUsername(String username);
-    public Optional<List<Room>> getCreatedRoomsByUserId(String userId);
 }

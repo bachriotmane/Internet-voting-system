@@ -12,9 +12,7 @@ import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, String> {
     List<Room> findRoomsByRoomCreator(UserApp roomCreator);
-
-
     Optional<List<Room>> findByTitleContainingIgnoreCase(String keyword);
+    public Optional<List<Room>> findByRoomCreatorUserId(String userId);
 
-    Optional<List<Programme>> findProgrammeListByRoomId(@Param("roomId") String roomId);
 }

@@ -10,6 +10,7 @@ import org.fsts.internet_voting_system_backend.enums.UserRole;
 import org.fsts.internet_voting_system_backend.exceptions.ActivationException;
 import org.fsts.internet_voting_system_backend.exceptions.RefreshTokenExpiredException;
 import org.fsts.internet_voting_system_backend.repositories.RoleAppRepository;
+import org.fsts.internet_voting_system_backend.repositories.RoomRepository;
 import org.fsts.internet_voting_system_backend.repositories.UserAppRepository;
 import org.fsts.internet_voting_system_backend.services.JwtService;
 import org.fsts.internet_voting_system_backend.services.UserService;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final ValidationService validationService;
     private final JwtService jwtService;
     private final RoleAppRepository roleRepository;
+    private final RoomRepository roomRepository;
     @Override
     public UserApp saveUser(UserApp userApp) {
         userApp.setUserId(UUID.randomUUID().toString());
@@ -96,7 +98,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     @Override
     public Optional<List<Room>> getCreatedRooms(String userId) {
-        return userAppRepository.getCreatedRoomsByUserId(userId);
+        return roomRepository.findByRoomCreatorUserId(userId);
     }
 
 
