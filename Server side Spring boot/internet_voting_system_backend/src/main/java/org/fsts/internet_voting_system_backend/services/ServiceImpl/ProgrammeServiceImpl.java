@@ -34,6 +34,6 @@ public class ProgrammeServiceImpl implements ProgrammeService {
 
     @Override
     public List<Programme> findProgrammeByDateAndRoom(LocalDate date, Room room) {
-        return programmeRepository.findProgrammeByProgrammeRoomAndCreationDateOrderByCreationDateAsc(date,room);
+        return programmeRepository.findByCreationDateAndProgrammeRoomOrderByCreationDateAsc(date,room);
     }
 }

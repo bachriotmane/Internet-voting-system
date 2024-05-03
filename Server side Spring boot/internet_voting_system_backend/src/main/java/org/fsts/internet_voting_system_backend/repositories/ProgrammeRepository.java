@@ -7,10 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProgrammeRepository extends JpaRepository<Programme, String> {
-    public List<Programme> findProgrammeByProgrammeRoomAndCreationDateOrderByCreationDateAsc(
+    public List<Programme> findByCreationDateAndProgrammeRoomOrderByCreationDateAsc(
             LocalDate creationDate, Room programmeRoom
+    );
+
+    List<Programme> findByProgrammeTitleContainingIgnoreCaseAndProgrammeRoom(
+            String keyword, Room programmeRoom
     );
 
 }
