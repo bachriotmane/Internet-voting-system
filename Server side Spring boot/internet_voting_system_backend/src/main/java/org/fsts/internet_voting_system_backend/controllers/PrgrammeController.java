@@ -35,12 +35,13 @@ public class PrgrammeController {
     private final ProgrammeService programmeService;
     private final VoteMapper voteMapper;
     private final ProgrammeMapper programmeMapper;
+    private final RoomService roomService;
 
     @GetMapping("/votes/{id}")
     public List<VoteDTO> getVotesProgramme(@PathVariable String id){
         return programmeService.getProgrammeById(id).getVoteList().stream().map(voteMapper::fromEntity).collect(Collectors.toList());
     }
-    private final RoomService roomService;
+
         @GetMapping("/{roomId}")
         public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
         {
