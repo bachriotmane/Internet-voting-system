@@ -29,12 +29,12 @@ public class RoomMapperImpl implements RoomMapper {
             roomProgrammes.add(programmeService.getProgrammeById(progId).get());
         });
         roomDto.roomMembersId().forEach((userId) ->{
-            roomMembers.add(userService.getUserById(userId));
+            roomMembers.add(userService.getUserById(userId).get());
         });
 
         return  Room.builder()
                 .roomId(roomDto.roomId())
-                .roomCreator(userService.getUserById(roomDto.roomCreatorId()))
+                .roomCreator(userService.getUserById(roomDto.roomCreatorId()).get())
                 .roomDescription(roomDto.roomDescription())
                 .title(roomDto.title())
                 .startAt(roomDto.startAt())

@@ -44,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getUserJoiningRooms(String userId) {
-        return userService.getUserById(userId).getJoiningRooms();
+        return userService.getUserById(userId).get().getJoiningRooms();
     }
 
     @Override

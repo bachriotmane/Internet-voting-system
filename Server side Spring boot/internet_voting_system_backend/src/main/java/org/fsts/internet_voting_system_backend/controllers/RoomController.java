@@ -37,8 +37,8 @@ public class RoomController {
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?>  getAllRoomById(@PathVariable String id ){
-        Optional<Room>  room = roomService.getRoomById(id);
+    public ResponseEntity<?> getRoomById(@PathVariable String id ){
+         Optional<Room>  room = roomService.getRoomById(id);
 
         if(room.isPresent())
         {

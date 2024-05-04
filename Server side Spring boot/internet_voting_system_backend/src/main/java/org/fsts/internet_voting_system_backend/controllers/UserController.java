@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
 
@@ -35,9 +37,16 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<?> updateUserInfo(@RequestBody UserDTO userDTO)
     {
-        UserApp userApp = userMapper.fromDTO(userDTO);
-        userApp = userService.updateUser(userApp);
-        UserDTO updatedUserDTO = userMapper.fromEntity(userApp);
+        String id =userDTO.userId();
+        if(id==null)
+            return new ResponseEntity<>("User Id must be not null" , HttpStatus.BAD_REQUEST);
+
+        Optional<UserApp> userApp=userService.getUserById(id);
+        if(userApp.isEmpty())
+            return new ResponseEntity<>("No user found with this id :"+id , HttpStatus.BAD_REQUEST);
+        UserApp userToUpdate =userMapper.fromDTO(userDTO);
+        UserApp updatedUser=userService.updateUser(userToUpdate);
+        UserDTO updatedUserDTO=userMapper.fromEntity(updatedUser);
         return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
     }
 }
