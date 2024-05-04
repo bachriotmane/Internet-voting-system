@@ -13,4 +13,7 @@ public interface ProgrammeService {
     public List<Programme> getAllProgrammes();
     public Optional<Programme> getProgrammeById(String progId);
     public  List<Programme> findProgrammeByDateAndRoom(LocalDate date, Room room);
+    List<Programme> findProgrammeByKeywordAndRoom(
+            String keyword, Room programmeRoom
+    );
 }

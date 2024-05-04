@@ -26,25 +26,24 @@ import java.util.List;
 @AllArgsConstructor
 public class PrgrammeController {
     private final ProgrammeService programmeService;
-    private  final ProgrammeRepository programmeRepository;
+    private final ProgrammeRepository programmeRepository;
     private final VoteMapper voteMapper;
     private final RoomService roomService;
     private final ProgrammeMapper programmeMapper;
 
     @GetMapping("/votes/{id}")
-    public ResponseEntity<?> getVotesProgramme(@PathVariable String id){
-        Optional<Programme> programme =programmeService.getProgrammeById(id);
-        if(programme.isPresent()){
+    public ResponseEntity<?> getVotesProgramme(@PathVariable String id) {
+        Optional<Programme> programme = programmeService.getProgrammeById(id);
+        if (programme.isPresent()) {
             return ResponseEntity.ok(programme.get().getVoteList().stream().map(voteMapper::fromEntity).collect(Collectors.toList()));
         }
         return new ResponseEntity<>("No programme found with id " + id, HttpStatus.NOT_FOUND);
     }
 
-//<<<<<<< HEAD
-        @GetMapping("/{roomId}")
-        public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
-        {
-            Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
+    //<<<<<<< HEAD
+    @GetMapping("/{roomId}")
+    public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId) {
+        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
 //=======
 //    @GetMapping("/{roomId}")
 //    public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
@@ -52,51 +51,46 @@ public class PrgrammeController {
 //        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
 //>>>>>>> 835fc5c290981c7854e0f0d492479b5efb35d210
 
-            if(programmes.isPresent() && !programmes.get().isEmpty() )
-            {
-                List<ProgrammeDTO> programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
-                return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity<>("there no programme in this room *_*",HttpStatus.NOT_FOUND);
-            }
+        if (programmes.isPresent() && !programmes.get().isEmpty()) {
+            List<ProgrammeDTO> programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
+            return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("there no programme in this room *_*", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/byDateAndRoom/{roomId}")
-    public List<ProgrammeDTO> getProgrammeByDateAndRoom(
+    public ResponseEntity<?> getProgrammeByDateAndRoom(
             @PathVariable String roomId,
             @RequestParam("date")
             @DateTimeFormat(pattern = "yyyy-MM-dd")
             LocalDate date
-    )
-    {
+    ) {
         Optional<Room> room = roomService.getRoomById(roomId);
         if (room.isEmpty())
-            new ResponseEntity<>("there is no room with the following id : "+roomId,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("there is no room with the following id : " + roomId, HttpStatus.NOT_FOUND);
 
         List<Programme> programmes = programmeService.findProgrammeByDateAndRoom(date, room.get());
         List<ProgrammeDTO> programmeDTOs = new ArrayList<>();
-        if ( ! programmes.isEmpty() ) {
+        if (!programmes.isEmpty()) {
             programmeDTOs = programmes.stream().map(programmeMapper::fromEntity).toList();
         }
-        return programmeDTOs;
+        return new ResponseEntity<>(programmeDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/byKeywordAndRoom/{roomId}")
     public ResponseEntity<?> getProgrammeByKeywordAndRoom(
             @PathVariable String roomId,
             @RequestParam("Keyword") String Keyword
-    )
-    {
+    ) {
         Optional<Room> room = roomService.getRoomById(roomId);
-        List<Programme> programmes = programmeRepository.findByProgrammeTitleContainingIgnoreCaseAndProgrammeRoom(Keyword,room.get());
-        if(programmes!=null && room.isPresent())
-        {
-            List<ProgrammeDTO> programmeDTOS = programmes.stream().map(programmeMapper::fromEntity).toList();
-            return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>("there no programme in this room with this specific keyword ",HttpStatus.NOT_FOUND);
-        }
+        if (room.isEmpty())
+            return new ResponseEntity<>("there is no room with the following id : " + roomId, HttpStatus.NOT_FOUND);
+
+        List<Programme> programmes = programmeService.findProgrammeByKeywordAndRoom(Keyword, room.get());
+        List<ProgrammeDTO> programmeDTOs = new ArrayList<>();
+        if (!programmes.isEmpty())
+            programmeDTOs = programmes.stream().map(programmeMapper::fromEntity).toList();
+        return new ResponseEntity<>(programmeDTOs, HttpStatus.OK);
     }
 }

@@ -84,7 +84,7 @@ public class InternetVotingSystemBackendApplication {
 
 			Programme programme1 = Programme.builder().programmeDescription("Prog1 Desc").programmeTitle("Prog1").programmeRoom(room1).creationDate(LocalDate.now()).build();
 			Programme programme2 = Programme.builder().programmeDescription("Prog2 Desc").programmeTitle("Prog2").programmeRoom(room2).creationDate(LocalDate.of(2024, 5, 2)).build();
-			Programme programme3 = Programme.builder().programmeDescription("Prog3 Desc").programmeTitle("Prog3").programmeRoom(room2).creationDate(LocalDate.of(2024, 5, 2)).build();
+			Programme programme3 = Programme.builder().programmeDescription("Prog3 Desc").programmeTitle("Ping").programmeRoom(room2).creationDate(LocalDate.of(2024, 5, 2)).build();
 
 			programmeService.saveProgramme(programme1);
 			programmeService.saveProgramme(programme2);
