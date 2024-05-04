@@ -17,6 +17,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -81,9 +82,9 @@ public class InternetVotingSystemBackendApplication {
 
 
 
-			Programme programme1 = Programme.builder().programmeDescription("Prog1 Desc").programmeTitle("Prog1").programmeRoom(room1).build();
-			Programme programme2 = Programme.builder().programmeDescription("Prog2 Desc").programmeTitle("Prog2").programmeRoom(room1).build();
-			Programme programme3 = Programme.builder().programmeDescription("Prog3 Desc").programmeTitle("Prog3").programmeRoom(room1).build();
+			Programme programme1 = Programme.builder().programmeDescription("Prog1 Desc").programmeTitle("Prog1").programmeRoom(room1).creationDate(LocalDate.now()).build();
+			Programme programme2 = Programme.builder().programmeDescription("Prog2 Desc").programmeTitle("Prog2").programmeRoom(room2).creationDate(LocalDate.of(2024, 5, 2)).build();
+			Programme programme3 = Programme.builder().programmeDescription("Prog3 Desc").programmeTitle("Prog3").programmeRoom(room2).creationDate(LocalDate.of(2024, 5, 2)).build();
 
 			programmeService.saveProgramme(programme1);
 			programmeService.saveProgramme(programme2);

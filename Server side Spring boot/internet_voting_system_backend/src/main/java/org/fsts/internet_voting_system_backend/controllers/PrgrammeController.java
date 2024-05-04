@@ -71,9 +71,12 @@ public class PrgrammeController {
     )
     {
         Optional<Room> room = roomService.getRoomById(roomId);
+        if (room.isEmpty())
+            new ResponseEntity<>("there is no room with the following id : "+roomId,HttpStatus.NOT_FOUND);
+
         List<Programme> programmes = programmeService.findProgrammeByDateAndRoom(date, room.get());
         List<ProgrammeDTO> programmeDTOs = new ArrayList<>();
-        if (programmes != null) {
+        if ( ! programmes.isEmpty() ) {
             programmeDTOs = programmes.stream().map(programmeMapper::fromEntity).toList();
         }
         return programmeDTOs;
