@@ -24,7 +24,7 @@ public class VoteMapperImpl implements VoteMapper {
         vote.setDateVote(voteDTO.voteDate());
         UserApp voter = userService.getUserById(voteDTO.voteId());
         vote.setVoter(voter);
-        Programme programme = programmeService.getProgrammeById(voteDTO.programmeId());
+        Programme programme = programmeService.getProgrammeById(voteDTO.programmeId()).get();
         vote.setProgramme(programme);
         return  vote;
     }

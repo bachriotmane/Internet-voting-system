@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Component
@@ -25,8 +26,8 @@ public class ProgrammeMapperImpl implements ProgrammeMapper {
         programme.setProgrammeId(programmeDTO.programmeId());
         programme.setProgrammeTitle(programme.getProgrammeTitle());
         programme.setProgrammeDescription(programme.getProgrammeDescription());
-        Room room = roomService.getRoomById(programmeDTO.programmeRoom());
-        programme.setProgrammeRoom(room);
+        Optional<Room> room = roomService.getRoomById(programmeDTO.programmeRoom());
+        programme.setProgrammeRoom(room.get());
         programme.setCreationDate(programmeDTO.creationDate());
         List<Vote> voteList= new ArrayList<>();
         for (String voteId : programmeDTO.voteIds()){

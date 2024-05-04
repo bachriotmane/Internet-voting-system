@@ -28,8 +28,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room getRoomById(String roomId) {
-        return roomRepository.findById(roomId).orElseThrow(()->new RuntimeException("Room with id"+roomId+" not found"));
+    public Optional<Room> getRoomById(String roomId) {
+        return roomRepository.findById(roomId);
     }
 
     @Override
@@ -68,16 +68,16 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room addProgrammeToRoom(String roomId, String programmeId) {
-        Room room=this.getRoomById(roomId);
-        Programme programme=programmeService.getProgrammeById(programmeId);
-        if (room == null || programme == null) {
+        Optional<Room> room=this.getRoomById(roomId);
+        Optional<Programme> programme=programmeService.getProgrammeById(programmeId);
+        if (programme.isEmpty() || room.isEmpty()) {
             return null;
         }
-        room.getProgrammeList().add(programme);
-        programme.setProgrammeRoom(room);
-        this.saveRoom(room);
-        programmeService.saveProgramme(programme);
-        return room;
+        room.get().getProgrammeList().add(programme.get());
+        programme.get().setProgrammeRoom(room.get());
+        this.saveRoom(room.get());
+        programmeService.saveProgramme(programme.get());
+        return room.get();
     }
 
 

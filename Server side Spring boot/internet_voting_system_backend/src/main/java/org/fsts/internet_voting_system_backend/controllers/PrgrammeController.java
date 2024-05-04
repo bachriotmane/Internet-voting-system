@@ -32,8 +32,12 @@ public class PrgrammeController {
     private final ProgrammeMapper programmeMapper;
 
     @GetMapping("/votes/{id}")
-    public List<VoteDTO> getVotesProgramme(@PathVariable String id){
-        return programmeService.getProgrammeById(id).getVoteList().stream().map(voteMapper::fromEntity).collect(Collectors.toList());
+    public ResponseEntity<?> getVotesProgramme(@PathVariable String id){
+        Optional<Programme> programme =programmeService.getProgrammeById(id);
+        if(programme.isPresent()){
+            return ResponseEntity.ok(programme.get().getVoteList().stream().map(voteMapper::fromEntity).collect(Collectors.toList()));
+        }
+        return new ResponseEntity<>("No programme found with id " + id, HttpStatus.NOT_FOUND);
     }
 
 //<<<<<<< HEAD
@@ -66,8 +70,8 @@ public class PrgrammeController {
             LocalDate date
     )
     {
-        Room room = roomService.getRoomById(roomId);
-        List<Programme> programmes = programmeService.findProgrammeByDateAndRoom(date, room);
+        Optional<Room> room = roomService.getRoomById(roomId);
+        List<Programme> programmes = programmeService.findProgrammeByDateAndRoom(date, room.get());
         List<ProgrammeDTO> programmeDTOs = new ArrayList<>();
         if (programmes != null) {
             programmeDTOs = programmes.stream().map(programmeMapper::fromEntity).toList();
@@ -81,9 +85,9 @@ public class PrgrammeController {
             @RequestParam("Keyword") String Keyword
     )
     {
-        Room room = roomService.getRoomById(roomId);
-        List<Programme> programmes = programmeRepository.findByProgrammeTitleContainingIgnoreCaseAndProgrammeRoom(Keyword,room);
-        if(programmes!=null)
+        Optional<Room> room = roomService.getRoomById(roomId);
+        List<Programme> programmes = programmeRepository.findByProgrammeTitleContainingIgnoreCaseAndProgrammeRoom(Keyword,room.get());
+        if(programmes!=null && room.isPresent())
         {
             List<ProgrammeDTO> programmeDTOS = programmes.stream().map(programmeMapper::fromEntity).toList();
             return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);

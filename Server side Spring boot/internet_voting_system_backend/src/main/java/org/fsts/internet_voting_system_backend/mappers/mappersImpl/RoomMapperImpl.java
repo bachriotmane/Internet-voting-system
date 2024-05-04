@@ -26,7 +26,7 @@ public class RoomMapperImpl implements RoomMapper {
         List<UserApp> roomMembers = new ArrayList<>();
         List<Programme> roomProgrammes = new ArrayList<>();
        roomDto.programmeListId().forEach((progId) ->{
-            roomProgrammes.add(programmeService.getProgrammeById(progId));
+            roomProgrammes.add(programmeService.getProgrammeById(progId).get());
         });
         roomDto.roomMembersId().forEach((userId) ->{
             roomMembers.add(userService.getUserById(userId));

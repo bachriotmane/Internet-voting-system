@@ -7,7 +7,11 @@ import org.fsts.internet_voting_system_backend.entities.Vote;
 import org.fsts.internet_voting_system_backend.mappers.VoteMapper;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.fsts.internet_voting_system_backend.services.VoteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/votes")
@@ -18,13 +22,17 @@ public class VoteController {
     private final ProgrammeService programmeService;
 
     @PostMapping("/")
-    public VoteDTO voterProgramme(@RequestBody VoteDTO voteDTO){
-        Programme programme = programmeService.getProgrammeById(voteDTO.programmeId());
-        Vote vote = voteService.saveVote(voteMapper.fomDTO(voteDTO));
-        programme.getVoteList().add(vote);
-        programme =  programmeService.saveProgramme(programme);
-        vote.setProgramme(programme);
-        voteService.saveVote(vote);
-        return voteMapper.fromEntity(vote);
+    public ResponseEntity<?> voterProgramme(@RequestBody VoteDTO voteDTO){
+        Optional<Programme> programme = programmeService.getProgrammeById(voteDTO.programmeId());
+        if(programme.isPresent()){
+            Vote vote = voteService.saveVote(voteMapper.fomDTO(voteDTO));
+            programme.get().getVoteList().add(vote);
+            Programme programme1 =  programmeService.saveProgramme(programme.get());
+            vote.setProgramme(programme1);
+            voteService.saveVote(vote);
+            return ResponseEntity.ok(voteMapper.fromEntity(vote));
+        }
+        return new ResponseEntity<>("Programme not found with id " + voteDTO.programmeId(), HttpStatus.NOT_FOUND);
+
     }
 }

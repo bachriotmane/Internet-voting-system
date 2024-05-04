@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,8 +29,8 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     }
 
     @Override
-    public Programme getProgrammeById(String progId) {
-        return programmeRepository.findById(progId).orElseThrow(()->new RuntimeException("Programme with id "+progId+" not found"));
+    public Optional<Programme> getProgrammeById(String progId) {
+        return programmeRepository.findById(progId);
     }
 
     @Override

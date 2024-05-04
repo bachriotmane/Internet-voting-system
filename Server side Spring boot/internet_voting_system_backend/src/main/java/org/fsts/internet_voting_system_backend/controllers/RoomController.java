@@ -38,11 +38,11 @@ public class RoomController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?>  getAllRoomById(@PathVariable String id ){
-        Room  room = roomService.getRoomById(id);
+        Optional<Room>  room = roomService.getRoomById(id);
 
-        if(room !=null )
+        if(room.isPresent())
         {
-            RoomDTO roomDTO = roomMapper.fromEntity(room);
+            RoomDTO roomDTO = roomMapper.fromEntity(room.get());
             return new  ResponseEntity<>(roomDTO,HttpStatus.OK);
         }
         else {
