@@ -39,17 +39,9 @@ public class PrgrammeController {
         }
         return new ResponseEntity<>("No programme found with id " + id, HttpStatus.NOT_FOUND);
     }
-
-    //<<<<<<< HEAD
     @GetMapping("/{roomId}")
     public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId) {
         Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
-//=======
-//    @GetMapping("/{roomId}")
-//    public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId)
-//    {
-//        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
-//>>>>>>> 835fc5c290981c7854e0f0d492479b5efb35d210
 
         if (programmes.isPresent() && !programmes.get().isEmpty()) {
             List<ProgrammeDTO> programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
