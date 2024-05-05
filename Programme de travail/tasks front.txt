@@ -1,0 +1,20 @@
+BACHRI Otmane
++HomePage ==> MenuNavigations
++RoomPage ProgrammeItems
++CreateProgrammePage
+
+
+Aramali
++CraeteRoomPage
++ListRoomsPage Joinings+Created
+
+
+
+
+Idrissi
++ProfilePage ==> (Edit USER INfo)
++ProgrammePage
+
+
+
++A discuter envoyer une invitation au admin pour join la reuinion

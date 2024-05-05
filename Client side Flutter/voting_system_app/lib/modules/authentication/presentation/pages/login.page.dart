@@ -8,6 +8,7 @@ import 'package:voting_system_app/modules/authentication/presentation/widgets/bu
 import 'package:voting_system_app/modules/authentication/presentation/widgets/custom.emptybutton.dart';
 import 'package:voting_system_app/modules/authentication/presentation/widgets/textfiled.custom.dart';
 import 'package:voting_system_app/modules/elections/home.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/routing.page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -45,7 +46,7 @@ class LoginPage extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (c) => const HomePage(),
+                      builder: (c) => const RoutingPage(),
                     ));
               } else if (state is LoginRefreshTokenExpireActionState) {
                 ScaffoldMessenger.of(context).showSnackBar(
