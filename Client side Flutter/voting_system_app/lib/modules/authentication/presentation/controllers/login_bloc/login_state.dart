@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'login_bloc.dart';
 
 sealed class LoginState {}
@@ -10,7 +11,10 @@ class LoginLoadingState extends LoginState {}
 
 class LoginLoadedSuccessState extends LoginState {}
 
-class LoginErrorState extends LoginState {}
+class LoginErrorState extends LoginState {
+  
+  
+}
 
 class LoginVisiblePasswordBtnClickedState extends LoginState {}
 

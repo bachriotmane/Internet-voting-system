@@ -43,6 +43,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   meta: ^1.10.0
   timer_count_down: ^2.2.2
+  awesome_bottom_bar: ^1.2.4
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:
