@@ -37,8 +37,8 @@ public class RoomController {
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?>  getAllRoomById(@PathVariable String id ){
-        Optional<Room>  room = roomService.getRoomById(id);
+    public ResponseEntity<?> getRoomById(@PathVariable String id ){
+         Optional<Room>  room = roomService.getRoomById(id);
 
         if(room.isPresent())
         {
@@ -92,10 +92,10 @@ public class RoomController {
             @PathVariable String roomId,
             @RequestParam("programmeId") String programmeId
     ){
-        Room room =roomService.addProgrammeToRoom(roomId,programmeId);
-        if(room==null)
-            return new ResponseEntity<>("room or programme does not exist ",HttpStatus.NOT_FOUND);
-        RoomDTO roomDTO=roomMapper.fromEntity(room);
+        Optional<Room> room =roomService.addProgrammeToRoom(roomId,programmeId);
+        if(room.isEmpty())
+            return new ResponseEntity<>("Poom or Programme does not exist ",HttpStatus.NOT_FOUND);
+        RoomDTO roomDTO=roomMapper.fromEntity(room.get());
         return new ResponseEntity<>(roomDTO,HttpStatus.OK);
 
     }

@@ -44,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getUserJoiningRooms(String userId) {
-        return userService.getUserById(userId).getJoiningRooms();
+        return userService.getUserById(userId).get().getJoiningRooms();
     }
 
     @Override
@@ -67,17 +67,22 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room addProgrammeToRoom(String roomId, String programmeId) {
-        Optional<Room> room=this.getRoomById(roomId);
-        Optional<Programme> programme=programmeService.getProgrammeById(programmeId);
+    public Optional<Room> addProgrammeToRoom(String roomId, String programmeId) {
+        Optional<Room> room = this.getRoomById(roomId);
+        Optional<Programme> programme = programmeService.getProgrammeById(programmeId);
         if (programme.isEmpty() || room.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        room.get().getProgrammeList().add(programme.get());
-        programme.get().setProgrammeRoom(room.get());
-        this.saveRoom(room.get());
-        programmeService.saveProgramme(programme.get());
-        return room.get();
+        Room updatedRoom = room.get();
+        Programme updatedProgramme = programme.get();
+
+        updatedRoom.getProgrammeList().add(updatedProgramme);
+        updatedProgramme.setProgrammeRoom(updatedRoom);
+
+        this.saveRoom(updatedRoom);
+        programmeService.saveProgramme(updatedProgramme);
+
+        return Optional.of(updatedRoom);
     }
 
 

@@ -10,6 +10,7 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public UserApp fromDTO(UserDTO userDTO){
         UserApp userApp = new UserApp();
+        userApp.setUserId(userDTO.userId());
         userApp.setUsername(userDTO.username());
         userApp.setEmail(userDTO.email());
         userApp.setPassword(userDTO.password());

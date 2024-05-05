@@ -37,4 +37,9 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     public List<Programme> findProgrammeByDateAndRoom(LocalDate date, Room room) {
         return programmeRepository.findByCreationDateAndProgrammeRoomOrderByCreationDateAsc(date,room);
     }
+
+    @Override
+    public List<Programme> findProgrammeByKeywordAndRoom(String keyword, Room programmeRoom) {
+        return programmeRepository.findByProgrammeTitleContainingIgnoreCaseAndProgrammeRoom(keyword,programmeRoom);
+    }
 }
