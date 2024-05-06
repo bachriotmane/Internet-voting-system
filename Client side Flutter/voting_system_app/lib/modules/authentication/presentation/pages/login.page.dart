@@ -7,7 +7,6 @@ import 'package:voting_system_app/modules/authentication/presentation/pages/regi
 import 'package:voting_system_app/modules/authentication/presentation/widgets/button.custom.dart';
 import 'package:voting_system_app/modules/authentication/presentation/widgets/custom.emptybutton.dart';
 import 'package:voting_system_app/modules/authentication/presentation/widgets/textfiled.custom.dart';
-import 'package:voting_system_app/modules/elections/home.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/routing.page.dart';
 
 class LoginPage extends StatelessWidget {

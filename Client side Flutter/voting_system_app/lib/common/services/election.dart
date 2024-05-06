@@ -4,10 +4,11 @@ import 'package:voting_system_app/modules/elections/data/datasource/vote.datasou
 import 'package:voting_system_app/modules/elections/data/repositories/vote.repository.impl.dart';
 import 'package:voting_system_app/modules/elections/domain/repositories/vote.repository.dart';
 
-final serviceLocator = GetIt.instance;
-init() {
-  serviceLocator
+final serviceLocatorElection = GetIt.instance;
+initElection() {
+  serviceLocatorElection
       .registerLazySingleton<VoteDataSource>(() => VoteDataSourceImpl());
-  serviceLocator.registerLazySingleton<VoteRepository>(() =>
-      VoteRepositoryImpl(voteDataSource: serviceLocator<VoteDataSource>()));
+  serviceLocatorElection.registerLazySingleton<VoteRepository>(() =>
+      VoteRepositoryImpl(
+          voteDataSource: serviceLocatorElection<VoteDataSource>()));
 }

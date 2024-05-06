@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_print
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
@@ -27,8 +26,9 @@ class UserDataSourceImpl implements UserDataSource {
           return handlers.next(options);
         },
         onError: (exception, handler) async {
-          if (exception.response!.statusCode == 414 ||
-              exception.response!.statusCode == 401) {
+          if (exception.response != null &&
+              (exception.response!.statusCode == 414 ||
+                  exception.response!.statusCode == 401)) {
             final String? newAccessToken = await getRefreshToken();
             if (newAccessToken != null) {
               dio.options.headers["Authorization"] = 'Bearer $newAccessToken';
@@ -48,7 +48,7 @@ class UserDataSourceImpl implements UserDataSource {
   Future<bool> addUser(UserModel user) async {
     try {
       final resp = await Dio().post(
-          "${AppConsants.apiUrl}authentication/register",
+          "${AppConstants.apiUrl}authentication/register",
           data: user.toJson());
       if (resp.statusCode == 200) {
         return true;
@@ -66,7 +66,7 @@ class UserDataSourceImpl implements UserDataSource {
   @override
   Future<bool> activateUserAccount(ActivationModel activationModel) async {
     final resp = await Dio().post(
-        "${AppConsants.apiUrl}authentication/activation",
+        "${AppConstants.apiUrl}authentication/activation",
         data: activationModel.toJson());
     if (resp.statusCode == 200) {
       return true;
@@ -79,8 +79,8 @@ class UserDataSourceImpl implements UserDataSource {
 
   @override
   Future<JwtModel> loginUser(AuthenticationModel auth) async {
-    final resp = await Dio()
-        .post("${AppConsants.apiUrl}authentication/login", data: auth.toJson());
+    final resp = await Dio().post("${AppConstants.apiUrl}authentication/login",
+        data: auth.toJson());
 
     if (resp.statusCode == 200) {
       return JwtModel.fromJson(resp.data);
@@ -106,7 +106,7 @@ class UserDataSourceImpl implements UserDataSource {
       );
 
       final resp = await Dio().post(
-        "${AppConsants.apiUrl}authentication/login",
+        "${AppConstants.apiUrl}authentication/login",
         data: auth.toJson(),
       );
 
