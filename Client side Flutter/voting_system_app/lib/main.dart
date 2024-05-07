@@ -11,6 +11,7 @@ void main() async {
   init();
   initElection();
   await GetStorage.init();
+  // await getStorage.erase();
   runApp(const MyApp());
 }
 

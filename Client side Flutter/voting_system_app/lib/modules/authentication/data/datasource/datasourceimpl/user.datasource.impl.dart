@@ -29,19 +29,53 @@ class UserDataSourceImpl implements UserDataSource {
           if (exception.response != null &&
               (exception.response!.statusCode == 414 ||
                   exception.response!.statusCode == 401)) {
-            final String? newAccessToken = await getRefreshToken();
+            await getRefreshToken();
+            final String? newAccessToken = _getStorage.read("access-token");
             if (newAccessToken != null) {
               dio.options.headers["Authorization"] = 'Bearer $newAccessToken';
               return handler.resolve(await dio.fetch(exception.requestOptions));
             } else {
-              GetStorage().erase();
+              await GetStorage().erase();
               return handler.next(exception);
             }
           }
         },
       ),
     );
-    serviceLocator.registerLazySingleton<Dio>(() => dio);
+    serviceLocator.registerSingleton<Dio>(dio);
+  }
+  getRefreshToken() async {
+    try {
+      final refreshToken = _getStorage.read("refresh-token");
+
+      AuthenticationModel auth = AuthenticationModel(
+        grantType: "refreshToken",
+        username: "111",
+        password: "1111",
+        withRefreshToen: true,
+        refreshToken: refreshToken,
+      );
+
+      final resp = await Dio().post(
+        "${AppConstants.apiUrl}authentication/login",
+        data: auth.toJson(),
+      );
+
+      if (resp.statusCode == 200) {
+        JwtModel jwt = JwtModel.fromJson(resp.data);
+        await _getStorage.write("refresh-token", jwt.refreshToken);
+        await _getStorage.write("access-token", jwt.refreshToken);
+        return null;
+      } else if (resp.statusCode == 401) {
+        await GetStorage().erase();
+        return null;
+      } else if (resp.statusCode == 414) {
+        print("Wow");
+        return null;
+      }
+    } catch (err) {
+      print("Error ::  $err");
+    }
   }
 
   @override
@@ -90,37 +124,6 @@ class UserDataSourceImpl implements UserDataSource {
       throw TokenExpiredException(message: resp.data);
     } else {
       throw Exception(resp.data);
-    }
-  }
-
-  getRefreshToken() async {
-    try {
-      final refreshToken = _getStorage.read("refresh-token");
-
-      AuthenticationModel auth = AuthenticationModel(
-        grantType: "refreshToken",
-        username: "111",
-        password: "1111",
-        withRefreshToen: true,
-        refreshToken: refreshToken,
-      );
-
-      final resp = await Dio().post(
-        "${AppConstants.apiUrl}authentication/login",
-        data: auth.toJson(),
-      );
-
-      if (resp.statusCode == 200) {
-        JwtModel jwt = JwtModel.fromJson(resp.data);
-        await _getStorage.write("refresh-token", jwt.refreshToken);
-      } else if (resp.statusCode == 401) {
-        GetStorage().erase();
-        return null;
-      } else if (resp.statusCode == 414) {
-        print("Wow");
-      }
-    } catch (err) {
-      print("Error ::  $err");
     }
   }
 }

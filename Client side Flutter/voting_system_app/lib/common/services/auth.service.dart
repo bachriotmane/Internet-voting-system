@@ -9,6 +9,9 @@ import 'package:voting_system_app/modules/authentication/domain/usecase/loginuse
 
 final serviceLocator = GetIt.instance;
 init() async {
+  serviceLocator
+      .registerLazySingleton<UserDataSource>(() => UserDataSourceImpl());
+
   serviceLocator.registerLazySingleton<AddUserUsecase>(
       () => AddUserUsecase(userRepository: serviceLocator<UserRepository>()));
 
@@ -17,9 +20,6 @@ init() async {
 
   serviceLocator.registerLazySingleton<UserRepository>(() =>
       UserRepositoryImpl(userDataSource: serviceLocator<UserDataSource>()));
-
-  serviceLocator
-      .registerLazySingleton<UserDataSource>(() => UserDataSourceImpl());
 
   serviceLocator.registerLazySingleton<LoginUserUsecase>(
       () => LoginUserUsecase(userRepo: serviceLocator<UserRepository>()));
