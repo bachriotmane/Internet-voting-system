@@ -1,10 +1,7 @@
 // ignore_for_file: avoid_print
 
-// import 'package:dio/dio.dart';
-// import 'package:voting_system_app/common/services/auth.service.dart';
 import 'package:voting_system_app/common/utils/constants/app.constants.dart';
 import 'package:voting_system_app/modules/authentication/data/datasource/datasourceimpl/user.datasource.impl.dart';
-// import 'package:voting_system_app/modules/authentication/data/datasource/user.datasource.dart';
 import 'package:voting_system_app/modules/elections/data/datasource/vote.datasource.dart';
 import 'package:voting_system_app/modules/elections/data/models/vote.model.dart';
 
