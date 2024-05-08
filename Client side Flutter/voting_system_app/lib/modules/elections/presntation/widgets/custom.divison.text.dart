@@ -22,8 +22,11 @@ class CustomDivisionText extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.only(right: 10),
             child: const Text(
-              "See all",
-              style: TextStyle(color: Colors.blue, fontSize: 20),
+              "view all",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         )

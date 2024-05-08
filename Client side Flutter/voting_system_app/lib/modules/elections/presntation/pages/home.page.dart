@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/room.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.category.widget.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.divison.text.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.searchbar.dart';
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             _buildHeader(context),
-            _buildSearchBar(),
+            _buildSearchBar(context),
             const SizedBox(height: 10),
             _buildPhotoBannerBlurtedImage(context),
             CustomDivisionText(divisionName: "Rooms categories", onTap: () {}),
@@ -102,7 +103,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _buildSearchBar() {
+  _buildSearchBar(context) {
     return Container(
       margin: const EdgeInsets.all(10),
       child: Row(
@@ -115,7 +116,9 @@ class HomePage extends StatelessWidget {
             flex: 1,
             child: InkWell(
               borderRadius: BorderRadius.circular(18),
-              onTap: () {},
+              onTap: () {
+                _showAlertDialog(context);
+              },
               child: Container(
                 margin: const EdgeInsets.only(left: 7),
                 height: 56,
@@ -152,53 +155,6 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
-    // return Stack(
-    //   alignment: Alignment.center,
-    //   children: [
-    //     Positioned(
-    //       top: 16,
-    //       left: MediaQuery.of(context).size.width * .67,
-    //       child: const Image(
-    //         height: 120,
-    //         image: AssetImage(
-    //           "assets/homepage/vv.png",
-    //         ),
-    //       ),
-    //     ),
-    //     const Positioned(
-    //       top: 40,
-    //       left: 15,
-    //       child: Column(
-    //         children: [
-    //           Text(
-    //             "🎉 Exciting Offer Alert! 🎉",
-    //             style: TextStyle(
-    //               color: Color(0xFFffeb3b),
-    //               fontSize: 20,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //           Text(
-    //             "Only 40% Slots Left",
-    //             style: TextStyle(
-    //               color: Color(0xFFFFFFFF),
-    //               fontSize: 17,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //           Text(
-    //             "Act Quickly!",
-    //             style: TextStyle(
-    //               color: Colors.amberAccent,
-    //               fontSize: 20,
-    //               fontWeight: FontWeight.w800,
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     )
-    //   ],
-    // );
   }
 
   _buildCategoriesCards(context) {
@@ -241,10 +197,49 @@ class HomePage extends StatelessWidget {
       child: CarouselSlider(
         items: List.generate(
           1,
-          (index) => const RoomCard(),
+          (index) => RoomCard(
+            onClick: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (c) => RoomPage()));
+            },
+            saveRoom: () {},
+          ),
         ),
         options: CarouselOptions(height: 210, autoPlay: true),
       ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Filter Options'),
+          content: const SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+                Text("Filter options"),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
