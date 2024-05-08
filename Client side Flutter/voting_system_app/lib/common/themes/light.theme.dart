@@ -6,4 +6,5 @@ ThemeData lightTheme = ThemeData(
   secondaryHeaderColor: Colors.white,
   hintColor: Colors.grey[200],
   splashColor: AppColor.thirdLightColor,
+  fontFamily: 'Raleway',
 );

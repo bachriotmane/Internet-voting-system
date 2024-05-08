@@ -4,14 +4,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:voting_system_app/common/services/election.dart';
-import 'package:voting_system_app/common/services/auth.service.dart';
-import 'package:voting_system_app/modules/authentication/data/datasource/user.datasource.dart';
-import 'package:voting_system_app/modules/elections/data/datasource/vote.datasource.dart';
+
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.category.widget.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.divison.text.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.searchbar.dart';
+import 'package:voting_system_app/modules/elections/presntation/widgets/room.card.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -20,13 +18,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          serviceLocator<UserDataSource>();
-          final voteDataSource = serviceLocatorElection<VoteDataSource>();
-          await voteDataSource.getAllVotes();
-        },
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -37,10 +28,10 @@ class HomePage extends StatelessWidget {
             CustomDivisionText(divisionName: "Rooms categories", onTap: () {}),
             _buildCategoriesCards(context),
             CustomDivisionText(divisionName: "Popular rooms", onTap: () {}),
-            _buildServicesCarousel(),
+            _buildServicesCarousel(context),
             //! Top Rated
             CustomDivisionText(divisionName: "Top rated rooms", onTap: () {}),
-            _buildServicesCarousel(),
+            _buildServicesCarousel(context),
           ],
         ),
       ),
@@ -243,13 +234,14 @@ class HomePage extends StatelessWidget {
         ]));
   }
 
-  _buildServicesCarousel() {
+  _buildServicesCarousel(context) {
     return Container(
+      height: MediaQuery.of(context).size.height * .3,
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
       child: CarouselSlider(
         items: List.generate(
-          5,
-          (index) => Text("Room Card $index"),
+          1,
+          (index) => const RoomCard(),
         ),
         options: CarouselOptions(height: 210, autoPlay: true),
       ),
