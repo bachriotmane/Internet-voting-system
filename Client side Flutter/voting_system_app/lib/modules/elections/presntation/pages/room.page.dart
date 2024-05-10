@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/home.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/widgets/room.card.dart';
 
 class RoomPage extends StatelessWidget {
   RoomPage({super.key});
@@ -250,7 +251,12 @@ class RoomPage extends StatelessWidget {
 
   Widget _buildProgrammesList(context) {
     return Column(
-      children: List.generate(15, (index) => Container()),
+      children: List.generate(
+          15,
+          (index) => RoomCard(
+                onClick: () {},
+                saveRoom: () {},
+              )),
     );
   }
 
