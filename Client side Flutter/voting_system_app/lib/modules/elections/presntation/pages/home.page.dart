@@ -4,9 +4,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:voting_system_app/common/utils/dummydata/room.categories.dart';
 
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/room.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.category.widget.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.divison.text.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.searchbar.dart';
@@ -159,35 +161,27 @@ class HomePage extends StatelessWidget {
 
   _buildCategoriesCards(context) {
     return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * .254,
-        child: const Wrap(direction: Axis.horizontal, children: [
-          CustomCategoryWidget(
-              categoryName: "Politics and Governance",
-              categoryIcon: FontAwesomeIcons.landmark),
-          CustomCategoryWidget(
-              categoryName: "Social Issues and Advocacy",
-              categoryIcon: FontAwesomeIcons.peopleGroup),
-          CustomCategoryWidget(
-              categoryName: "Health and Wellness",
-              categoryIcon: FontAwesomeIcons.userDoctor),
-          CustomCategoryWidget(
-              categoryName: "Technology and Innovation",
-              categoryIcon: FontAwesomeIcons.microchip),
-          CustomCategoryWidget(
-              categoryName: "Arts and Culture",
-              categoryIcon: FontAwesomeIcons.masksTheater),
-          CustomCategoryWidget(
-              categoryName: "Education and Learning",
-              categoryIcon: FontAwesomeIcons.bookOpenReader),
-          CustomCategoryWidget(
-              categoryName: "Environmental Conservation",
-              categoryIcon: FontAwesomeIcons.seedling),
-          CustomCategoryWidget(
-              categoryName: "Public Safety and Security",
-              categoryIcon: FontAwesomeIcons.shieldHalved),
-        ]));
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .254,
+      child: Wrap(
+        direction: Axis.horizontal,
+        children: List.generate(
+          categoryList.length,
+          (index) => CustomCategoryWidget(
+            categoryName: categoryList[index]['categoryName'],
+            categoryIcon: categoryList[index]['categoryIcon'],
+            onTap: () {
+              //! Go To Bloc and Navigate To Rooms List for this category,
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (c) => const RoomsPage(rooms: [])));
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   _buildServicesCarousel(context) {
