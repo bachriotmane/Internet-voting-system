@@ -40,6 +40,7 @@ class TestData {
         programmeDesc: "Deep dive into quantum theory",
         creationDate: DateTime.now(),
         roomId: "room1",
+        creatorId: "user1",
         votes: [
           Vote(
               id: "vote1",
@@ -54,6 +55,7 @@ class TestData {
         programmeDesc: "Understanding Einstein's theory",
         creationDate: DateTime.now(),
         roomId: "room1",
+        creatorId: "user2",
         votes: [],
       ),
       Programme(
@@ -62,6 +64,7 @@ class TestData {
         programmeDesc: "Analyzing themes and symbols in '1984'",
         creationDate: DateTime.now(),
         roomId: "room2",
+        creatorId: "user3",
         votes: [
           Vote(
               id: "vote2",
