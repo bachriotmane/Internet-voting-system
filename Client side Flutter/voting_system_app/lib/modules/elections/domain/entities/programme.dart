@@ -5,6 +5,7 @@ class Programme {
   String programmeDesc;
   DateTime creationDate;
   String roomId;
+  String creatorId;
   List votes;
   Programme({
     required this.programmeId,
@@ -13,5 +14,6 @@ class Programme {
     required this.creationDate,
     required this.roomId,
     required this.votes,
+    required this.creatorId,
   });
 }

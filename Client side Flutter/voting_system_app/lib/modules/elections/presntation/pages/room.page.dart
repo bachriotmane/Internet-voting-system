@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:voting_system_app/modules/elections/domain/entities/programme.dart';
+import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/home.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/programme.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/programme.card.dart';
 
 class RoomPage extends StatelessWidget {
@@ -253,16 +254,18 @@ class RoomPage extends StatelessWidget {
   Widget _buildProgrammesList(context) {
     return Column(
       children: List.generate(
-          15,
-          (index) => ProgrammeCard(
-                programme: Programme(
-                    programmeId: "",
-                    programmeTitle: "This is the programme title ",
-                    programmeDesc: "programmeDesc",
-                    creationDate: DateTime.now(),
-                    roomId: "12",
-                    votes: []),
-              )),
+        TestData.getSampleProgrammes().length,
+        (index) => ProgrammeCard(
+          programme: TestData.getSampleProgrammes()[index],
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (c) => ProgrammePage(
+                        programme: TestData.getSampleProgrammes()[index])));
+          },
+        ),
+      ),
     );
   }
 
