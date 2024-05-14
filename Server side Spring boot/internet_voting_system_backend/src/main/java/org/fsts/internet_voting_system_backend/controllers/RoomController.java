@@ -51,7 +51,7 @@ public class RoomController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getCraetedRooms(@PathVariable("userId") String userId)
+    public ResponseEntity<?> getCreatedRooms(@PathVariable("userId") String userId)
     {
         Optional<List<Room>> rooms = userService.getCreatedRooms(userId);
         if(rooms.isPresent() && !rooms.get().isEmpty())
@@ -77,7 +77,7 @@ public class RoomController {
            return new ResponseEntity<>("there is no rooms with the title ",HttpStatus.NOT_FOUND);
        }
     }
-    @PostMapping("/")
+    @PostMapping
     public RoomDTO addNewRoom(@RequestBody RoomDTO roomDTO){
         Room savedRoom = roomService.saveRoom(roomMapper.fromDTO(roomDTO));
         return roomMapper.fromEntity(savedRoom);
