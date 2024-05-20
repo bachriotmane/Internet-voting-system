@@ -17,12 +17,16 @@ class RoomRepositoryImpl extends RoomRepository {
   Future<Either<Failure, bool>> addRoom(Room room) async {
     try {
       final result = await roomDataSource.addRoom(RoomModel(
-          createAt: room.createAt,
-          expireAt: room.expireAt,
-          roomDesc: room.roomDesc,
+          roomId: room.roomId,
           roomTitle: room.roomTitle,
+          roomDesc: room.roomDesc,
+          createAt: room.createAt,
           startAt: room.startAt,
-          code: room.code));
+          expireAt: room.expireAt,
+          code: "",
+          members: [],
+          creatorId: "", // to do get the user id from localstorage
+          programmes: []));
       return right(result);
     } on ServerException catch (err) {
       return left(ServerFailure(message: err.errorMessage));

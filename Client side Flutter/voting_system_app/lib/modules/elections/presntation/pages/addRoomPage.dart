@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:voting_system_app/common/utils/constants/app.constants.dart';
 import 'package:voting_system_app/modules/elections/data/models/room.model.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/presntation/blocs/bloc_rooms/city_blok_bloc.dart';
 
 class AjouterCity extends StatefulWidget {
@@ -105,7 +106,11 @@ class _AjouterCityState extends State<AjouterCity> {
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () async {
-                        RoomModel room = RoomModel(
+                        Room room = Room(
+                          creatorId: "",
+                          members: [],
+                          programmes: [],
+                          roomId: "",
                             createAt: DateTime.now(),
                             expireAt: DateTime.parse(_expiredAtController.text),
                             roomDesc: _describtionController.text,

@@ -19,7 +19,7 @@ class LoadRooms extends RoomBlocEvent {
 }
 
 class AddRoomEvent extends RoomBlocEvent {
-  final RoomModel room;
+  final Room room;
   const AddRoomEvent({required this.room});
   @override
   List<Object> get props => [room];
