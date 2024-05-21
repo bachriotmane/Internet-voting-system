@@ -20,4 +20,16 @@ class VoteDataSourceImpl extends VoteDataSource {
       return [];
     }
   }
+
+  @override
+  Future<List<VoteModel>> getProgrammeVotes(String programmeId) {
+    // TODO: implement getProgrammeVotes
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<VoteModel> saveVoteProgramme(VoteModel vote) {
+    // TODO: implement saveVoteProgramme
+    throw UnimplementedError();
+  }
 }

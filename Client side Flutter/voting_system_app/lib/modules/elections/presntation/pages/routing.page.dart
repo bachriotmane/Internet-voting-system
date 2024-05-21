@@ -38,7 +38,7 @@ class _RoutingPageState extends State<RoutingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        extendBody: true,
+        // extendBody: true,
         body: pages[index],
         bottomNavigationBar: CurvedNavigationBar(
           items: items,
