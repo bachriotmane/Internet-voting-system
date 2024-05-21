@@ -15,13 +15,11 @@ class VoteRepositoryImpl extends VoteRepository {
   @override
   Future<Either<Failure, List<VoteModel>>> getProgrammeVotes(
       String programmeId) {
-    // TODO: implement getProgrammeVotes
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, VoteModel>> saveVoteProgramme(VoteModel vote) {
-    // TODO: implement saveVoteProgramme
     throw UnimplementedError();
   }
 
