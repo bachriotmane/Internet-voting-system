@@ -1,10 +1,8 @@
 package org.fsts.internet_voting_system_backend;
 
 import lombok.AllArgsConstructor;
-import org.fsts.internet_voting_system_backend.entities.Programme;
-import org.fsts.internet_voting_system_backend.entities.Room;
-import org.fsts.internet_voting_system_backend.entities.UserApp;
-import org.fsts.internet_voting_system_backend.entities.Vote;
+import org.fsts.internet_voting_system_backend.entities.*;
+import org.fsts.internet_voting_system_backend.repositories.RoomCategoryRepository;
 import org.fsts.internet_voting_system_backend.security.RsaKeyConfig;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.fsts.internet_voting_system_backend.services.RoomService;
@@ -23,6 +21,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 @AllArgsConstructor
@@ -33,6 +32,7 @@ public class InternetVotingSystemBackendApplication {
 	private final ProgrammeService programmeService;
 	private final VoteService voteService;
 	private final RoomService roomService;
+	private final RoomCategoryRepository roomCategoryRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(InternetVotingSystemBackendApplication.class, args);
@@ -40,6 +40,28 @@ public class InternetVotingSystemBackendApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(){
 		return (args)->{
+			RoomCategory roomCategory1 = RoomCategory.builder().id("1").label("Politics and Governance").build();
+			RoomCategory roomCategory2 = RoomCategory.builder().id("2").label("Social Issues and Advocacy").build();
+			RoomCategory roomCategory3 = RoomCategory.builder().id("2").label("Health and Wellness").build();
+
+			RoomCategory roomCategory4 = RoomCategory.builder().id(UUID.randomUUID().toString()).label("Technology and Innovation").build();
+			RoomCategory roomCategory5 = RoomCategory.builder().id(UUID.randomUUID().toString()).label("Arts and Culture").build();
+			RoomCategory roomCategory6 = RoomCategory.builder().id(UUID.randomUUID().toString()).label("Education and Learning").build();
+			RoomCategory roomCategory7 = RoomCategory.builder().id(UUID.randomUUID().toString()).label("Environmental Conservation").build();
+			RoomCategory roomCategory8 = RoomCategory.builder().id(UUID.randomUUID().toString()).label("Public Safety and Security").build();
+
+			roomCategory1 = roomCategoryRepository.save(roomCategory1);
+			roomCategory2 = roomCategoryRepository.save(roomCategory2);
+			roomCategory3 = roomCategoryRepository.save(roomCategory3);
+
+			roomCategoryRepository.save(roomCategory4);
+			roomCategoryRepository.save(roomCategory5);
+			roomCategoryRepository.save(roomCategory6);
+			roomCategoryRepository.save(roomCategory7);
+			roomCategoryRepository.save(roomCategory8);
+
+
+
 			UserApp user1 = UserApp.builder().nom("BACHRI").age(22).CIN("AM67679").email("bachriotmane@gmail.com").phoneNumber("0615314354").password("123456").prenom("Otmane").username("otmane12").build();
 			UserApp user2 = UserApp.builder().nom("ARAMALI").age(32).CIN("V78890").email("aramali@gmail.com").phoneNumber("06778621").password("aramali").prenom("Mohamed").username("moha123").build();
 			UserApp user3 = UserApp.builder().nom("IDRISSI").age(27).CIN("HN12321").email("idrissi@gmail.com").phoneNumber("068921123").password("id898").prenom("AbdLakrim").username("idr789").build();
@@ -61,6 +83,11 @@ public class InternetVotingSystemBackendApplication {
 			room1.setRoomCreator(user1);
 			room2.setRoomCreator(user2);
 			room3.setRoomCreator(user3);
+
+			room1.setRoomCategory(roomCategory1);
+			room2.setRoomCategory(roomCategory2);
+			room3.setRoomCategory(roomCategory3);
+
 			roomService.saveRoom(room1);
 			roomService.saveRoom(room2);
 			roomService.saveRoom(room3);

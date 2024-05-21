@@ -10,6 +10,7 @@ import org.fsts.internet_voting_system_backend.services.RoomService;
 import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -83,6 +84,21 @@ public class RoomServiceImpl implements RoomService {
         programmeService.saveProgramme(updatedProgramme);
 
         return Optional.of(updatedRoom);
+    }
+
+    @Override
+    public List<Room> getRoomsByCategory(String category) {
+        List<Room>  rooms = getAllRooms();
+        List<Room> wantedRooms = new ArrayList<>();
+        if(rooms!=null){
+            for(Room r : rooms){
+                if(r.getRoomCategory()!=null && r.getRoomCategory().getLabel().equals(category)){
+                    wantedRooms.add(r);
+                }
+            }
+        }
+
+        return wantedRooms;
     }
 
 

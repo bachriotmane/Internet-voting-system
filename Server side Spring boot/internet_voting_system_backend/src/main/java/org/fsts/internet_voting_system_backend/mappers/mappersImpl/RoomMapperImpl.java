@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.DTOs.RoomDTO;
 import org.fsts.internet_voting_system_backend.entities.Programme;
 import org.fsts.internet_voting_system_backend.entities.Room;
+import org.fsts.internet_voting_system_backend.entities.RoomCategory;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.mappers.RoomMapper;
+import org.fsts.internet_voting_system_backend.repositories.RoomCategoryRepository;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import java.util.List;
 public class RoomMapperImpl implements RoomMapper {
     private final UserService userService;
     private final ProgrammeService programmeService;
+    private final RoomCategoryRepository roomCategoryRepository;
 
 
 
@@ -31,12 +34,15 @@ public class RoomMapperImpl implements RoomMapper {
         roomDto.roomMembersId().forEach((userId) ->{
             roomMembers.add(userService.getUserById(userId).get());
         });
+        String categoryName = roomDto.category();
+        RoomCategory roomCategory = roomCategoryRepository.findRoomCategoriesByLabel(categoryName);
 
         return  Room.builder()
                 .roomId(roomDto.roomId())
                 .roomCreator(userService.getUserById(roomDto.roomCreatorId()).get())
                 .roomDescription(roomDto.roomDescription())
                 .title(roomDto.title())
+                .roomCategory(roomCategory)
                 .startAt(roomDto.startAt())
                 .expireAt(roomDto.expireAt())
                 .createAt(roomDto.createAt())
@@ -68,6 +74,7 @@ public class RoomMapperImpl implements RoomMapper {
                 .roomMembersId(roomMemberIds)
                 .startAt(room.getStartAt())
                 .title(room.getTitle())
+                .category(room.getRoomCategory().getLabel())
                 .build();
 
     }

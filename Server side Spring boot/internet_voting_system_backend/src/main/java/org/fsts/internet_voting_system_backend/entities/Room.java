@@ -30,4 +30,7 @@ public class Room {
 
     @OneToMany
     private List<Programme> programmeList;
+
+    @ManyToOne
+    private RoomCategory roomCategory;
 }

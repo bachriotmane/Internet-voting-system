@@ -20,4 +20,6 @@ public interface RoomService {
     public Optional<List<Room>> getRoomsByKeyword(String key);
     public Optional<List<Room>> getAllRoom();
     public Optional<Room> addProgrammeToRoom(String roomId, String programmeId);
+
+    public  List<Room> getRoomsByCategory(String category);
 }

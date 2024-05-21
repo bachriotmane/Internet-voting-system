@@ -7,16 +7,16 @@ import java.util.List;
 
 @Builder
 public record RoomDTO(
-
-        String roomId,
-                 String title,
-                 String roomDescription,
-                 Date createAt,
-                 Date startAt,
-                 Date expireAt,
-                 String code,
-                 List<String> roomMembersId,
-                 String roomCreatorId,
-                 List<String> programmeListId
+    String roomId,
+    String title,
+    String roomDescription,
+    Date createAt,
+    Date startAt,
+    Date expireAt,
+    String code,
+    List<String> roomMembersId,
+    String roomCreatorId,
+    List<String> programmeListId,
+    String category
 ) {
 }

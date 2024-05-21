@@ -99,4 +99,10 @@ public class RoomController {
         return new ResponseEntity<>(roomDTO,HttpStatus.OK);
 
     }
+
+    @GetMapping("/category/{category}")
+    public List<RoomDTO> getRoomsByCategory(@PathVariable String category){
+        System.out.println(category);
+        return roomService.getRoomsByCategory(category).stream().map(roomMapper::fromEntity).collect(Collectors.toList());
+    }
 }

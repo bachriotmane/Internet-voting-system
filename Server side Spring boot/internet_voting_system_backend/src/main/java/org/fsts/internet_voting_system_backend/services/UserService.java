@@ -14,9 +14,11 @@ import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     public UserApp saveUser(UserApp userApp);
-    public UserApp registerUser( UserApp userApp);
     public UserApp updateUser(UserApp userApp);
     public List<UserApp> getAllUsers();
+    public UserApp registerUser( UserApp userApp);
+
+
     public void activationAccount(Map<String, String> code) throws ActivationException;
     public Map <String,String> connexion(AuthenticationDTO authenticationDTO) throws RefreshTokenExpiredException;
     public Optional<UserApp> getUserById(String userId);
