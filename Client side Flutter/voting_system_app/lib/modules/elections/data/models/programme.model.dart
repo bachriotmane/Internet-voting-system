@@ -9,4 +9,24 @@ class ProgrammeModel extends Programme {
       required super.roomId,
       required super.votes,
       required super.creatorId});
+
+  factory ProgrammeModel.fromJson(Map<String, dynamic> json) => ProgrammeModel(
+        programmeId: json["programmeId"],
+        programmeTitle: json["programmeTitle"],
+        programmeDesc: json["programmeDescription"],
+        creationDate: DateTime.parse(json["creationDate"]),
+        roomId: json["programmeRoom"],
+        votes: json["voteIds"] as List,
+        creatorId: json["creatorUserName"],
+      );
+
+  Map<String, dynamic> toJSON() => {
+        "programmeId": programmeId,
+        "programmeTitle": programmeTitle,
+        "programmeDescription": programmeDesc,
+        "creationDate": creationDate,
+        "programmeRoom": roomId,
+        "voteIds": votes,
+        "creatorUserName": creatorId,
+      };
 }

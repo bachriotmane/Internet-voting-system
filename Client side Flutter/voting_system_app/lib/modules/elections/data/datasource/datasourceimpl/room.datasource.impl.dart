@@ -10,7 +10,6 @@ class RoomDataSourceImpl implements RoomDataSource {
   final Dio _dio = serviceLocator<Dio>();
   @override
   Future<RoomModel> createRoom(RoomModel room) async {
-    print(room.startAt.toIso8601String());
     final resp =
         await _dio.post("${AppConstants.apiUrl}rooms/", data: room.toJson());
     if (resp.statusCode == 200) {

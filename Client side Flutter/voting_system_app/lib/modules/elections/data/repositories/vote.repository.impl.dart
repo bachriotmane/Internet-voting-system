@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:voting_system_app/common/errors/failueres/failure.dart';
 import 'package:voting_system_app/modules/elections/data/datasource/vote.datasource.dart';
 import 'package:voting_system_app/modules/elections/data/models/vote.model.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
 import 'package:voting_system_app/modules/elections/domain/repositories/vote.repository.dart';
 
 class VoteRepositoryImpl extends VoteRepository {
@@ -13,18 +14,29 @@ class VoteRepositoryImpl extends VoteRepository {
   });
 
   @override
-  Future<Either<Failure, List<VoteModel>>> getProgrammeVotes(
-      String programmeId) {
+  Future<Either<Failure, List<Vote>>> getProgrammeVotes(String programmeId) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, VoteModel>> saveVoteProgramme(VoteModel vote) {
-    throw UnimplementedError();
+  Future<Either<Failure, Vote>> saveVoteProgramme(Vote vote) async {
+    try {
+      final resp = await voteDataSource.saveVoteProgramme(
+        VoteModel(
+          id: vote.id,
+          date: vote.date,
+          voterId: vote.voterId,
+          votedProgramme: vote.votedProgramme,
+        ),
+      );
+      return right(resp);
+    } catch (err) {
+      return left(ServerFailure(message: err.toString()));
+    }
   }
 
   @override
-  Future<Either<Failure, List<VoteModel>>> getAllVotes() {
+  Future<Either<Failure, List<Vote>>> getAllVotes() {
     throw UnimplementedError();
   }
 }

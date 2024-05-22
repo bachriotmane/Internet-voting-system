@@ -7,11 +7,15 @@ class VoteModel extends Vote {
       required super.voterId,
       required super.votedProgramme});
 
-  Map<String, dynamic> toJSON() => {};
+  Map<String, dynamic> toJSON() => {
+        "voteDate": date.toIso8601String(),
+        "voterId": voterId,
+        "programmeId": votedProgramme,
+      };
   factory VoteModel.fromJSON(Map<String, dynamic> json) => VoteModel(
-        id: json['id'],
-        date: json['date'],
-        votedProgramme: json[''],
-        voterId: json[''],
+        id: json['voteId'],
+        date: DateTime.parse(json['voteDate']),
+        votedProgramme: json['programmeId'],
+        voterId: json['voterId'],
       );
 }

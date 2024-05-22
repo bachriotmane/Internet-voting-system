@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:voting_system_app/common/errors/failueres/failure.dart';
-import 'package:voting_system_app/modules/elections/data/models/vote.model.dart';
+
+import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
 
 abstract class VoteRepository {
-  Future<Either<Failure, List<VoteModel>>> getAllVotes();
-  Future<Either<Failure, List<VoteModel>>> getProgrammeVotes(
-      String programmeId);
-  Future<Either<Failure, VoteModel>> saveVoteProgramme(VoteModel vote);
+  Future<Either<Failure, List<Vote>>> getAllVotes();
+  Future<Either<Failure, List<Vote>>> getProgrammeVotes(String programmeId);
+  Future<Either<Failure, Vote>> saveVoteProgramme(Vote vote);
 }

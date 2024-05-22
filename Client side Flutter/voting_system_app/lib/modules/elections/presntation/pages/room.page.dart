@@ -1,19 +1,37 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
+import 'package:voting_system_app/modules/authentication/presentation/widgets/textfiled.custom.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/programme.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
-import 'package:voting_system_app/modules/elections/presntation/pages/home.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/blocs/roompage/roompage_bloc.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/programme.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/routing.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/programme.card.dart';
 
-class RoomPage extends StatelessWidget {
+class RoomPage extends StatefulWidget {
   RoomPage({super.key, required this.room});
   final Room room;
 
   @override
+  State<RoomPage> createState() => _RoomPageState();
+}
+
+class _RoomPageState extends State<RoomPage> {
+  final titreController = TextEditingController();
+
+  final descController = TextEditingController();
+  final bloc = RoompageBloc();
+  initStateBloc() {
+    bloc.add(RoomPageInitiaEvent(currentRoomId: widget.room.roomId));
+  }
+
+  @override
   Widget build(BuildContext context) {
+    initStateBloc();
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -65,7 +83,7 @@ class RoomPage extends StatelessWidget {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (c) => HomePage()));
+                                      builder: (c) => RoutingPage()));
                             },
                             icon: const Icon(FontAwesomeIcons.arrowLeft),
                           ),
@@ -125,7 +143,7 @@ class RoomPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //! Title
-          Text(room.roomTitle,
+          Text(widget.room.roomTitle,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           //! Description
           const SizedBox(height: 10),
@@ -137,13 +155,13 @@ class RoomPage extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                room.creatorUserName,
+                widget.room.creatorUserName,
                 style: TextStyle(fontSize: 20, color: Colors.grey[600]!),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          Text(room.roomDesc, style: TextStyle(fontSize: 17)),
+          Text(widget.room.roomDesc, style: TextStyle(fontSize: 17)),
           const SizedBox(height: 20),
 
           const SizedBox(height: 4),
@@ -154,7 +172,7 @@ class RoomPage extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    room.members.length.toString(),
+                    widget.room.members.length.toString(),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 5),
@@ -189,7 +207,7 @@ class RoomPage extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                  "${room.startAt.day}/${room.startAt.month}/${room.startAt.year}, ${room.startAt.hour}:${room.startAt.minute}",
+                  "${widget.room.startAt.day}/${widget.room.startAt.month}/${widget.room.startAt.year}, ${widget.room.startAt.hour}:${widget.room.startAt.minute}",
                   style: TextStyle(fontSize: 22)),
             ],
           ),
@@ -208,7 +226,7 @@ class RoomPage extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                  "${room.expireAt.day}/${room.expireAt.month}/${room.expireAt.year}, ${room.expireAt.hour}:${room.expireAt.minute}",
+                  "${widget.room.expireAt.day}/${widget.room.expireAt.month}/${widget.room.expireAt.year}, ${widget.room.expireAt.hour}:${widget.room.expireAt.minute}",
                   style: TextStyle(fontSize: 22)),
             ],
           ),
@@ -221,7 +239,29 @@ class RoomPage extends StatelessWidget {
             ),
           ),
           //! Programmes:
-          _buildProgrammesList(context),
+          BlocConsumer<RoompageBloc, RoompageState>(
+            bloc: bloc,
+            listenWhen: (_, current) => current is RoompageActionsState,
+            buildWhen: (_, current) => current is! RoompageActionsState,
+            listener: (context, state) {
+              if (state is RoompageProgrammeVotedSuccesfullyActionState) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Your has beeen passed Succesfully")));
+              }
+            },
+            builder: (context, state) {
+              if (state is RoomPageLoadedSuccesState) {
+                return _buildProgrammesList(context, state.programmes);
+              } else if (state is RoomPageLoadingState) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is RoompageErrorState) {
+                return Center(
+                    child: Text(state.message,
+                        style: TextStyle(color: Colors.red)));
+              }
+              return Text("Unknown state");
+            },
+          ),
         ],
       ),
     );
@@ -233,6 +273,7 @@ class RoomPage extends StatelessWidget {
     "https://t3.ftcdn.net/jpg/05/52/15/68/360_F_552156839_hQTIBjd35zljkgSz65pDaUUSyKK53DtZ.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQplobh5PxL-7cf5jKxvHVxQZ2Na5SnfI9IxxFu0zA7-ZvAncIfsKb52cnV08A76cX17K4&usqp=CAU",
   ];
+
   Widget _buildImagesCircles(context) {
     return Row(
       children: List.generate(
@@ -252,21 +293,26 @@ class RoomPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProgrammesList(context) {
+  Widget _buildProgrammesList(context, List<Programme> programmes) {
     return Column(
-      children: List.generate(
-        TestData.getSampleProgrammes().length,
-        (index) => ProgrammeCard(
-          programme: TestData.getSampleProgrammes()[index],
+      children: List.generate(programmes.length, (index) {
+        print(programmes[index].votes);
+        return ProgrammeCard(
+          isVoted: true,
+          voter: () {
+            bloc.add(RoompageVoteButtonClickedEvent(
+                programmeId: programmes[index].programmeId));
+          },
+          programme: programmes[index],
           onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (c) => ProgrammePage(
-                        programme: TestData.getSampleProgrammes()[index])));
+                    builder: (c) =>
+                        ProgrammePage(programme: programmes[index])));
           },
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -276,11 +322,16 @@ class RoomPage extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Create programme'),
-          content: const SizedBox(
-            height: 100,
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * .2,
             child: Column(
               children: [
-                Text("Add new Programme"),
+                //! Titre :
+                MyTextFiled(
+                    hintText: "Programme titre", controller: titreController),
+                MyTextFiled(
+                    hintText: "Programme description",
+                    controller: descController),
               ],
             ),
           ),
