@@ -16,6 +16,7 @@ class VoteDataSourceImpl extends VoteDataSource {
     final resp =
         await _dio.post("${AppConstants.apiUrl}votes/", data: vote.toJSON());
     if (resp.statusCode == 200) {
+      print(resp.data.toString());
       return VoteModel.fromJSON(resp.data);
     } else {
       throw ServerException(errorMessage: resp.data);
@@ -26,18 +27,26 @@ class VoteDataSourceImpl extends VoteDataSource {
   Future<List<VoteModel>> getAllVotes() async {
     try {
       final resp =
-          await UserDataSourceImpl.dio.get("${AppConstants.apiUrl}rooms");
-      print("Hi");
-      print(resp.data);
-      return [];
+          await UserDataSourceImpl.dio.get("${AppConstants.apiUrl}votes/");
+      return List<VoteModel>.from((resp.data as List).map(
+        (e) => VoteModel.fromJSON(e),
+      ));
     } catch (err) {
-      print(err.toString());
-      return [];
+      throw ServerException(errorMessage: err.toString());
     }
   }
 
   @override
-  Future<List<VoteModel>> getProgrammeVotes(String programmeId) {
-    throw UnimplementedError();
+  Future<List<VoteModel>> getProgrammeVotes(String programmeId) async {
+    final resp =
+        await _dio.get("${AppConstants.apiUrl}votes/programme/${programmeId}");
+    if (resp.statusCode == 200) {
+      print("||||||||||" + resp.data.toString());
+      return List<VoteModel>.from((resp.data as List).map(
+        (e) => VoteModel.fromJSON(e),
+      ));
+    } else {
+      throw ServerException(errorMessage: resp.data);
+    }
   }
 }

@@ -3,11 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:voting_system_app/common/services/election.dart';
 import 'package:voting_system_app/modules/authentication/presentation/widgets/textfiled.custom.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/programme.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
+import 'package:voting_system_app/modules/elections/domain/repositories/vote.repository.dart';
+import 'package:voting_system_app/modules/elections/presntation/blocs/addroom/addroom_bloc.dart';
 import 'package:voting_system_app/modules/elections/presntation/blocs/roompage/roompage_bloc.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/cart.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/programme.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/routing.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/programme.card.dart';
@@ -25,9 +30,15 @@ class _RoomPageState extends State<RoomPage> {
 
   final descController = TextEditingController();
   final bloc = RoompageBloc();
+  late bool isAllowed = false;
+  late bool isExpired = false;
   initStateBloc() {
+    isAllowed = widget.room.startAt.isAfter(DateTime.now());
+    isExpired = widget.room.expireAt.isBefore(DateTime.now());
     bloc.add(RoomPageInitiaEvent(currentRoomId: widget.room.roomId));
   }
+
+  String votedProgramme = "";
 
   @override
   Widget build(BuildContext context) {
@@ -45,94 +56,108 @@ class _RoomPageState extends State<RoomPage> {
             color: Colors.white,
           ),
         ),
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            //! Image with top = 0
-            Positioned(
-              top: 0,
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    child: Image.asset(
-                      "assets/homepage/vv.png",
-                      fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * .3,
-                    ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    width: MediaQuery.of(context).size.width * .95,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                    spreadRadius: 1,
-                                    blurRadius: 10,
-                                    color: Colors.grey[500]!)
-                              ]),
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => RoutingPage()));
-                            },
-                            icon: const Icon(FontAwesomeIcons.arrowLeft),
-                          ),
+        body: isAllowed
+            ? Center(child: Text("The room has not started yet."))
+            : !isExpired
+                ? Center(child: Text("The room has not started yet."))
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      //! Image with top = 0
+                      Positioned(
+                        top: 0,
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              child: Image.asset(
+                                "assets/homepage/vv.png",
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height * .3,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 4),
+                              width: MediaQuery.of(context).size.width * .95,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              color: Colors.grey[500]!)
+                                        ]),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (c) => RoutingPage()));
+                                      },
+                                      icon: const Icon(
+                                          FontAwesomeIcons.arrowLeft),
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              spreadRadius: 1,
+                                              blurRadius: 10,
+                                              color: Colors.grey[500]!)
+                                        ],
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (c) =>
+                                                    VotePieChart()));
+                                      },
+                                      icon:
+                                          const Icon(FontAwesomeIcons.bookmark),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
+                      ),
+                      //! ListView
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    spreadRadius: 1,
-                                    blurRadius: 10,
-                                    color: Colors.grey[500]!)
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(FontAwesomeIcons.bookmark),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey[500]!,
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(30),
                           ),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: _buildCard(context),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            //! ListView
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[500]!,
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: _buildCard(context),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -165,7 +190,6 @@ class _RoomPageState extends State<RoomPage> {
           const SizedBox(height: 20),
 
           const SizedBox(height: 4),
-          //! 24 people are here images ... seeAll
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -192,7 +216,6 @@ class _RoomPageState extends State<RoomPage> {
             ],
           ),
           const SizedBox(height: 10),
-          //! Row = Start at - end Time
           Row(
             children: [
               Container(
@@ -246,12 +269,15 @@ class _RoomPageState extends State<RoomPage> {
             listener: (context, state) {
               if (state is RoompageProgrammeVotedSuccesfullyActionState) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Your has beeen passed Succesfully")));
+                    content: Text("Your has been passed Successfully")));
+                bloc.add(
+                    RoomPageInitiaEvent(currentRoomId: widget.room.roomId));
               }
             },
             builder: (context, state) {
               if (state is RoomPageLoadedSuccesState) {
-                return _buildProgrammesList(context, state.programmes);
+                return _buildProgrammesList(
+                    context, state.programmes, state.currentUserVotedId);
               } else if (state is RoomPageLoadingState) {
                 return Center(child: CircularProgressIndicator());
               } else if (state is RoompageErrorState) {
@@ -267,17 +293,10 @@ class _RoomPageState extends State<RoomPage> {
     );
   }
 
-  List images = [
-    "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg",
-    "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
-    "https://t3.ftcdn.net/jpg/05/52/15/68/360_F_552156839_hQTIBjd35zljkgSz65pDaUUSyKK53DtZ.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQplobh5PxL-7cf5jKxvHVxQZ2Na5SnfI9IxxFu0zA7-ZvAncIfsKb52cnV08A76cX17K4&usqp=CAU",
-  ];
-
   Widget _buildImagesCircles(context) {
     return Row(
       children: List.generate(
-        images.length,
+        4,
         (index) => const Align(
           widthFactor: 0.6,
           child: CircleAvatar(
@@ -293,12 +312,11 @@ class _RoomPageState extends State<RoomPage> {
     );
   }
 
-  Widget _buildProgrammesList(context, List<Programme> programmes) {
+  Widget _buildProgrammesList(context, List<Programme> programmes, p) {
     return Column(
       children: List.generate(programmes.length, (index) {
-        print(programmes[index].votes);
         return ProgrammeCard(
-          isVoted: true,
+          isVoted: p == programmes[index].programmeId,
           voter: () {
             bloc.add(RoompageVoteButtonClickedEvent(
                 programmeId: programmes[index].programmeId));

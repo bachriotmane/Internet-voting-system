@@ -14,8 +14,14 @@ class VoteRepositoryImpl extends VoteRepository {
   });
 
   @override
-  Future<Either<Failure, List<Vote>>> getProgrammeVotes(String programmeId) {
-    throw UnimplementedError();
+  Future<Either<Failure, List<Vote>>> getProgrammeVotes(
+      String programmeId) async {
+    try {
+      final resp = await voteDataSource.getProgrammeVotes(programmeId);
+      return right(resp);
+    } catch (err) {
+      return left(ServerFailure(message: err.toString()));
+    }
   }
 
   @override
@@ -36,7 +42,12 @@ class VoteRepositoryImpl extends VoteRepository {
   }
 
   @override
-  Future<Either<Failure, List<Vote>>> getAllVotes() {
-    throw UnimplementedError();
+  Future<Either<Failure, List<Vote>>> getAllVotes() async {
+    try {
+      final resp = await voteDataSource.getAllVotes();
+      return right(resp);
+    } catch (err) {
+      return left(ServerFailure(message: err.toString()));
+    }
   }
 }

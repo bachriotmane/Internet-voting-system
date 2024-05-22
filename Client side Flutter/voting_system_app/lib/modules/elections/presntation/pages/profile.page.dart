@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:voting_system_app/common/utils/constants/colors.constants.dart';
+import 'package:voting_system_app/modules/authentication/presentation/pages/login.page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -104,6 +107,24 @@ class ProfilePage extends StatelessWidget {
                       _buildRowInfo(context, "Phone Number", "066-657-000"),
                       _buildRowInfo(context, "CIN", "W0000"),
                       _buildRowInfo(context, "Age", "18"),
+                      GestureDetector(
+                        onTap: () {
+                          GetStorage().erase().then((value) {
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (_) => LoginPage()));
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Text(
+                            "Log out",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 30,
                       ),

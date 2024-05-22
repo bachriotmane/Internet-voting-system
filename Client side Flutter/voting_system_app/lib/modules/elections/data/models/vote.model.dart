@@ -1,13 +1,15 @@
 import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
 
 class VoteModel extends Vote {
-  VoteModel(
-      {required super.id,
-      required super.date,
-      required super.voterId,
-      required super.votedProgramme});
+  VoteModel({
+    required super.id,
+    required super.date,
+    required super.voterId,
+    required super.votedProgramme,
+  });
 
   Map<String, dynamic> toJSON() => {
+        "voteId": id,
         "voteDate": date.toIso8601String(),
         "voterId": voterId,
         "programmeId": votedProgramme,
