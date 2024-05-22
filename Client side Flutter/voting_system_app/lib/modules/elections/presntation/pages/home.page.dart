@@ -2,9 +2,12 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:voting_system_app/common/utils/dummydata/room.categories.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
+import 'package:voting_system_app/modules/elections/presntation/blocs/home_bloc/home_bloc.dart';
 
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/room.page.dart';
@@ -16,10 +19,18 @@ import 'package:voting_system_app/modules/elections/presntation/widgets/room.car
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
+
+  final HomeBloc homeBloc = HomeBloc();
   final _getStorage = GetStorage();
 
+  initialState() {
+    homeBloc.add(HomeInitialEvent());
+  }
+
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    initialState();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -27,14 +38,59 @@ class HomePage extends StatelessWidget {
             _buildHeader(context),
             _buildSearchBar(context),
             const SizedBox(height: 10),
-            _buildPhotoBannerBlurtedImage(context),
-            CustomDivisionText(divisionName: "Rooms categories", onTap: () {}),
-            _buildCategoriesCards(context),
-            CustomDivisionText(divisionName: "Popular rooms", onTap: () {}),
-            _buildServicesCarousel(context),
-            //! Top Rated
-            CustomDivisionText(divisionName: "Top rated rooms", onTap: () {}),
-            _buildServicesCarousel(context),
+            BlocConsumer<HomeBloc, HomeState>(
+              bloc: homeBloc,
+              listenWhen: (prev, curr) => curr is HomeActionState,
+              buildWhen: (prev, curr) => curr is! HomeActionState,
+              listener: (context, state) {
+                if (state is HomeNavigateToCategoryRoomsPageActionsState) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (c) => RoomsPage(rooms: state.rooms)));
+                }
+              },
+              builder: (context, state) {
+                if (state is HomeLoadedSuccessState) {
+                  return Column(
+                    children: [
+                      _buildPhotoBannerBlurtedImage(context),
+                      CustomDivisionText(
+                          divisionName: "Rooms categories", onTap: () {}),
+                      _buildCategoriesCards(context),
+                      CustomDivisionText(
+                          divisionName: "Popular rooms", onTap: () {}),
+                      _buildServicesCarousel(context, state.rooms),
+                      //! Top Rated
+                      CustomDivisionText(
+                          divisionName: "Top rated rooms", onTap: () {}),
+                      _buildServicesCarousel(context, state.rooms),
+                    ],
+                  );
+                } else if (state is HomeSearchingState) {
+                  return Center(
+                    child: Column(
+                      children: List.generate(
+                        state.rooms.length,
+                        (index) => Text(
+                          state.rooms[index].roomTitle,
+                        ),
+                      ),
+                    ),
+                  );
+                } else if (state is HomeLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is HomeErrorState) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                } else {
+                  return Text("Unknown State");
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -110,9 +166,22 @@ class HomePage extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             flex: 5,
-            child: MyCustomSearchBar(),
+            child: MyCustomSearchBar(
+              controller: searchController,
+              onTapOutside: (event) {
+                homeBloc.add(HomeInitialEvent());
+                FocusScope.of(context).unfocus();
+              },
+              onEditingComplete: () {
+                homeBloc.add(HomeInitialEvent());
+                FocusScope.of(context).unfocus();
+              },
+              onIsTyping: (value) {
+                homeBloc.add(HomeTypingEvent(keyword: value));
+              },
+            ),
           ),
           Expanded(
             flex: 1,
@@ -172,11 +241,8 @@ class HomePage extends StatelessWidget {
             categoryName: categoryList[index]['categoryName'],
             categoryIcon: categoryList[index]['categoryIcon'],
             onTap: () {
-              //! Go To Bloc and Navigate To Rooms List for this category,
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (c) => const RoomsPage(rooms: [])));
+              homeBloc.add(HomeCategoryClickedEvent(
+                  category: categoryList[index]['categoryName']));
             },
           ),
         ),
@@ -184,17 +250,22 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _buildServicesCarousel(context) {
+  _buildServicesCarousel(context, List<Room> rooms) {
     return Container(
       height: MediaQuery.of(context).size.height * .3,
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
       child: CarouselSlider(
         items: List.generate(
-          1,
+          rooms.length,
           (index) => RoomCard(
+            room: rooms[index],
             onClick: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (c) => RoomPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (c) => RoomPage(
+                            room: rooms[index],
+                          )));
             },
             saveRoom: () {},
           ),

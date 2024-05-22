@@ -6,7 +6,6 @@ import 'package:voting_system_app/modules/elections/presntation/pages/create.roo
 import 'package:voting_system_app/modules/elections/presntation/pages/profile.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/home.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.dart';
-import 'package:voting_system_app/modules/elections/presntation/pages/search.page.dart';
 
 class RoutingPage extends StatefulWidget {
   const RoutingPage({super.key});
@@ -18,8 +17,8 @@ class RoutingPage extends StatefulWidget {
 class _RoutingPageState extends State<RoutingPage> {
   List<Widget> pages = [
     HomePage(),
-    const SearchPage(),
-    const CreateRoomPage(),
+    Scaffold(),
+    CreateRoomPage(),
     const RoomsPage(
       rooms: [],
     ),
@@ -38,7 +37,6 @@ class _RoutingPageState extends State<RoutingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // extendBody: true,
         body: pages[index],
         bottomNavigationBar: CurvedNavigationBar(
           items: items,

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:voting_system_app/modules/authentication/data/datasource/datasourceimpl/user.datasource.impl.dart';
 import 'package:voting_system_app/modules/authentication/data/datasource/user.datasource.dart';
@@ -9,18 +10,17 @@ import 'package:voting_system_app/modules/authentication/domain/usecase/loginuse
 
 final serviceLocator = GetIt.instance;
 init() async {
-  serviceLocator
-      .registerLazySingleton<UserDataSource>(() => UserDataSourceImpl());
-
-  serviceLocator.registerLazySingleton<AddUserUsecase>(
-      () => AddUserUsecase(userRepository: serviceLocator<UserRepository>()));
-
-  serviceLocator.registerLazySingleton<ActivationUsecase>(() =>
-      ActivationUsecase(userRepository: serviceLocator<UserRepository>()));
-
-  serviceLocator.registerLazySingleton<UserRepository>(() =>
+  serviceLocator.registerSingleton<UserDataSource>(UserDataSourceImpl());
+  serviceLocator.registerSingleton<UserRepository>(
       UserRepositoryImpl(userDataSource: serviceLocator<UserDataSource>()));
 
-  serviceLocator.registerLazySingleton<LoginUserUsecase>(
-      () => LoginUserUsecase(userRepo: serviceLocator<UserRepository>()));
+  serviceLocator.registerSingleton<AddUserUsecase>(
+      AddUserUsecase(userRepository: serviceLocator<UserRepository>()));
+
+  serviceLocator.registerSingleton<ActivationUsecase>(
+      ActivationUsecase(userRepository: serviceLocator<UserRepository>()));
+
+  serviceLocator.registerSingleton<LoginUserUsecase>(
+      LoginUserUsecase(userRepo: serviceLocator<UserRepository>()));
+  serviceLocator.registerSingleton<Dio>(UserDataSourceImpl.dio);
 }

@@ -8,6 +8,7 @@ import 'package:voting_system_app/modules/elections/presntation/pages/routing.pa
 
 final getStorage = GetStorage();
 void main() async {
+  //! Sawtna
   init();
   initElection();
   await GetStorage.init();
@@ -17,6 +18,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

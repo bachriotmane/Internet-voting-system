@@ -7,10 +7,16 @@ class RoomsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("Rooms Page"),
-      ),
+          child: Column(
+        children: List.generate(
+          rooms.length,
+          (index) => Container(
+            child: Text(rooms[index].roomTitle),
+          ),
+        ),
+      )),
     );
   }
 }

@@ -25,7 +25,6 @@ class VoteRepositoryImpl extends VoteRepository {
 
   @override
   Future<Either<Failure, List<VoteModel>>> getAllVotes() {
-    // TODO: implement getAllVotes
     throw UnimplementedError();
   }
 }

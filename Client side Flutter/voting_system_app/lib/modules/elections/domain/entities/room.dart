@@ -8,8 +8,9 @@ class Room {
   DateTime expireAt;
   String code;
   List<String> members;
-  String creatorId;
+  String creatorUserName;
   List<String> programmes;
+  String category;
   Room({
     required this.roomId,
     required this.roomTitle,
@@ -19,7 +20,8 @@ class Room {
     required this.expireAt,
     required this.code,
     required this.members,
-    required this.creatorId,
+    required this.creatorUserName,
     required this.programmes,
+    required this.category,
   });
 }

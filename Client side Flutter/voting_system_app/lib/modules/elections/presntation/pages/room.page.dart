@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/home.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/programme.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/programme.card.dart';
 
 class RoomPage extends StatelessWidget {
-  RoomPage({super.key});
+  RoomPage({super.key, required this.room});
+  final Room room;
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +125,7 @@ class RoomPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //! Title
-          const Text(
-              "This is just the test title of the room you can adjust it as you want",
+          Text(room.roomTitle,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           //! Description
           const SizedBox(height: 10),
@@ -136,15 +137,13 @@ class RoomPage extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                "Otmane",
+                room.creatorUserName,
                 style: TextStyle(fontSize: 20, color: Colors.grey[600]!),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          const Text(
-              "This is the description This is the description This is the description This is the description",
-              style: TextStyle(fontSize: 17)),
+          Text(room.roomDesc, style: TextStyle(fontSize: 17)),
           const SizedBox(height: 20),
 
           const SizedBox(height: 4),
@@ -154,8 +153,8 @@ class RoomPage extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text(
-                    "24",
+                  Text(
+                    room.members.length.toString(),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 5),
@@ -189,7 +188,8 @@ class RoomPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              const Text("March 24, 2024 10:00",
+              Text(
+                  "${room.startAt.day}/${room.startAt.month}/${room.startAt.year}, ${room.startAt.hour}:${room.startAt.minute}",
                   style: TextStyle(fontSize: 22)),
             ],
           ),
@@ -207,7 +207,8 @@ class RoomPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              const Text("March 30, 2024 14:30",
+              Text(
+                  "${room.expireAt.day}/${room.expireAt.month}/${room.expireAt.year}, ${room.expireAt.hour}:${room.expireAt.minute}",
                   style: TextStyle(fontSize: 22)),
             ],
           ),

@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:voting_system_app/common/errors/exceptions/exception.dart';
 import 'package:voting_system_app/common/errors/exceptions/token.expired.exception.dart';
-import 'package:voting_system_app/common/services/auth.service.dart';
 import 'package:voting_system_app/common/utils/constants/app.constants.dart';
 import 'package:voting_system_app/modules/authentication/data/datasource/user.datasource.dart';
 import 'package:voting_system_app/modules/authentication/data/model/activation.model.dart';
@@ -42,7 +41,6 @@ class UserDataSourceImpl implements UserDataSource {
         },
       ),
     );
-    serviceLocator.registerSingleton<Dio>(dio);
   }
   getRefreshToken() async {
     try {

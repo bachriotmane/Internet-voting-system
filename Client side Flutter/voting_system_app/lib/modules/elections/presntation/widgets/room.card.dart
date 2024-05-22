@@ -2,11 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 
 class RoomCard extends StatelessWidget {
-  RoomCard({super.key, required this.saveRoom, required this.onClick});
+  RoomCard(
+      {super.key,
+      required this.saveRoom,
+      required this.onClick,
+      required this.room});
   void Function()? saveRoom;
   void Function()? onClick;
+  final Room room;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +66,9 @@ class RoomCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          "This is the title of a room This is the title of a room This is the title of a",
+                          room.roomTitle,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
@@ -74,7 +80,7 @@ class RoomCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             //! image + Creator name
-                            const Row(
+                            Row(
                               children: [
                                 CircleAvatar(
                                   radius: 17,
@@ -82,7 +88,7 @@ class RoomCard extends StatelessWidget {
                                       AssetImage("assets/homepage/profile.png"),
                                 ),
                                 SizedBox(width: 5),
-                                Text("Otmane",
+                                Text(room.creatorUserName,
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
@@ -104,7 +110,7 @@ class RoomCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  "4,7k",
+                                  room.members.length.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
