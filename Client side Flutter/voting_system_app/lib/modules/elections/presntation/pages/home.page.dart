@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
 import 'package:voting_system_app/common/utils/dummydata/room.categories.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/presntation/blocs/home_bloc/home_bloc.dart';
 
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
-import 'package:voting_system_app/modules/elections/presntation/pages/room.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/verfication.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.category.widget.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.divison.text.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.searchbar.dart';
+import 'package:voting_system_app/modules/elections/presntation/widgets/room.card.aramali.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/room.card.dart';
 
 class HomePage extends StatelessWidget {
@@ -72,8 +74,15 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       children: List.generate(
                         state.rooms.length,
-                        (index) => Text(
-                          state.rooms[index].roomTitle,
+                        (index) => RoomCardBar(
+                          room: state.rooms[index],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => VerificationMemeberPage(
+                                        room: state.rooms[index])));
+                          },
                         ),
                       ),
                     ),
@@ -255,21 +264,25 @@ class HomePage extends StatelessWidget {
       height: MediaQuery.of(context).size.height * .3,
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
       child: CarouselSlider(
-        items: List.generate(
-          rooms.length,
-          (index) => RoomCard(
+        items: List.generate(rooms.length, (index) {
+          print(TestData.savedRooms.contains(rooms[index]));
+          return RoomCard(
+            isSaved: TestData.savedRooms.contains(rooms[index]),
             room: rooms[index],
             onClick: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (c) => RoomPage(
+                      builder: (c) => VerificationMemeberPage(
                             room: rooms[index],
                           )));
             },
-            saveRoom: () {},
-          ),
-        ),
+            saveRoom: () {
+              TestData.savedRooms.add(rooms[index]);
+              homeBloc.add(HomeInitialEvent());
+            },
+          );
+        }),
         options: CarouselOptions(height: 210, autoPlay: true),
       ),
     );

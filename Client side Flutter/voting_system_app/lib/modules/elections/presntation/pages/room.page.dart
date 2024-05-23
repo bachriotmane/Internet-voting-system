@@ -58,8 +58,8 @@ class _RoomPageState extends State<RoomPage> {
         ),
         body: isAllowed
             ? Center(child: Text("The room has not started yet."))
-            : !isExpired
-                ? Center(child: Text("The room has not started yet."))
+            : isExpired
+                ? Center(child: Text("The room has expired."))
                 : Stack(
                     alignment: Alignment.center,
                     children: [

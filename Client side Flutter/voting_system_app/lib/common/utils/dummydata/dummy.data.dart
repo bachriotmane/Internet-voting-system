@@ -3,6 +3,7 @@ import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
 
 class TestData {
+  static List<Room> savedRooms = [];
   static List<Room> getSampleRooms() {
     return [
       Room(

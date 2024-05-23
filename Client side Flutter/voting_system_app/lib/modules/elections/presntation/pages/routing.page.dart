@@ -2,10 +2,12 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/create.room.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/profile.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/home.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/saved.rooms.page.dart';
 
 class RoutingPage extends StatefulWidget {
   const RoutingPage({super.key});
@@ -17,7 +19,7 @@ class RoutingPage extends StatefulWidget {
 class _RoutingPageState extends State<RoutingPage> {
   List<Widget> pages = [
     HomePage(),
-    Scaffold(),
+    SavedRooms(rooms: TestData.savedRooms),
     CreateRoomPage(),
     const RoomsPage(
       rooms: [],

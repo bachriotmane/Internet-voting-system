@@ -1,25 +1,29 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timer_count_down/timer_count_down.dart';
-import 'package:voting_system_app/modules/authentication/presentation/controllers/verfication_bloc/verfication_bloc.dart';
-import 'package:voting_system_app/modules/authentication/presentation/pages/login.page.dart';
-import 'package:voting_system_app/modules/authentication/presentation/widgets/button.custom.dart';
 
-// ignore: use_key_in_widget_constructors, must_be_immutable
-class VerficationCodePage extends StatelessWidget {
-  final VerficationBloc _verficationBloc = VerficationBloc();
+import 'package:voting_system_app/modules/authentication/presentation/widgets/button.custom.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
+import 'package:voting_system_app/modules/elections/presntation/blocs/verfication_bloc/verification_bloc.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/room.page.dart';
+
+class VerificationMemeberPage extends StatelessWidget {
+  final VerificationBloc _verficationBloc = VerificationBloc();
+  Room room;
   bool isValid = true;
+  VerificationMemeberPage({
+    Key? key,
+    required this.room,
+  }) : super(key: key);
 
   void initState() {
-    _verficationBloc.add(VeficationInitialEvent());
+    _verficationBloc.add(VerficationInitialEvent());
   }
 
   TextEditingController c1 = TextEditingController();
   TextEditingController c2 = TextEditingController();
   TextEditingController c3 = TextEditingController();
   TextEditingController c4 = TextEditingController();
-  TextEditingController c5 = TextEditingController();
-  TextEditingController c6 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,45 +36,43 @@ class VerficationCodePage extends StatelessWidget {
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
-            child: BlocConsumer<VerficationBloc, VerficationState>(
+            child: BlocConsumer<VerificationBloc, VerificationState>(
               bloc: _verficationBloc,
               listenWhen: (previous, current) =>
-                  current is VerficationActionState,
+                  current is VerificationActionState,
               buildWhen: (previous, current) =>
-                  current is! VerficationActionState,
+                  current is! VerificationActionState,
               listener: (context, state) {
-                if (state is VerficationNavigateToLoginPageActionState) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Your account activated Succesfuly!")));
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (c) => LoginPage()));
+                if (state is VerificationNavigateToRoomPageActionState) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("You are in the room")));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (c) => RoomPage(room: room)));
                 }
-                if (state is VerficationErrorState) {
+                if (state is VerificationBadCodeActionState) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(state.errorMsg),
+                      content: Text("Incorrect code try later!"),
                       backgroundColor: Colors.red,
                     ),
                   );
-                  isValid = false;
-                  _verficationBloc.add(VeficationInitialEvent());
                 }
               },
               builder: (context, state) {
-                if (state is VerficationLoadedSucessState) {
+                if (state is VerificationSuccessState) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.email,
+                          Icon(Icons.security,
                               size: 36, color: Theme.of(context).primaryColor),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * .05,
                           ),
-                          const Text(
-                            "Verfication Code",
+                          Text(
+                            room.roomTitle,
                             style: TextStyle(
                                 fontSize: 27, fontWeight: FontWeight.w600),
                           ),
@@ -99,8 +101,6 @@ class VerficationCodePage extends StatelessWidget {
                                 _buildCodeBox(c2, isValid),
                                 _buildCodeBox(c3, isValid),
                                 _buildCodeBox(c4, isValid),
-                                _buildCodeBox(c5, isValid),
-                                _buildCodeBox(c6, isValid),
                               ],
                             ),
                             SizedBox(
@@ -108,55 +108,17 @@ class VerficationCodePage extends StatelessWidget {
                                     MediaQuery.of(context).size.height * .5),
                             Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.timer,
-                                        size: 35, color: Colors.grey[700]),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          .04,
-                                    ),
-                                    Countdown(
-                                      seconds: 59,
-                                      build: (b, t) => Text(
-                                        t.toString(),
-                                        style: TextStyle(
-                                          fontSize: 26,
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                      onFinished: () {
-                                        isValid = false;
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "The code is expired try to get new Code!"),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                        _verficationBloc
-                                            .add(VeficationInitialEvent());
-                                      },
-                                    )
-                                  ],
-                                ),
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         .03),
                                 MyCustomeButton(
                                   textButton: "Submit",
                                   onTap: () {
-                                    String code = c1.text +
-                                        c2.text +
-                                        c3.text +
-                                        c4.text +
-                                        c5.text +
-                                        c6.text;
+                                    String code =
+                                        c1.text + c2.text + c3.text + c4.text;
                                     _verficationBloc.add(
-                                        VerficationActivateAccountEvent(
-                                            code: code));
+                                        VerificationSubmitButtonClickedEvent(
+                                            providedCode: code, room: room));
                                   },
                                 )
                               ],
@@ -166,6 +128,11 @@ class VerficationCodePage extends StatelessWidget {
                       )
                     ],
                   );
+                } else if (state is VerificationLoadingState) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is VerificationErrorState) {
+                  return Text(state.message,
+                      style: TextStyle(color: Colors.red));
                 }
                 return const Text("Unknown state");
               },

@@ -28,6 +28,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   final titleController = TextEditingController();
   final descController = TextEditingController();
   String? dropdownValue;
+  String? code;
 
   DateTime startDate = DateTime.now();
   TimeOfDay startTime =
@@ -76,9 +77,10 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
         listener: (context, state) {
           if (state is AddroomRoomAddedSuccessfullyActionState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Room added Successfully!"),
+              content: Text("Room added Successfully! code : $code"),
               backgroundColor: Colors.green,
             ));
+
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (c) => RoutingPage()));
           }
@@ -106,7 +108,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                     child: MyCustomeButton(
                       textButton: "create",
                       onTap: () {
-                        String code = generateUniqueCode();
+                        code = generateUniqueCode();
                         DateTime startAt = DateTime(
                             startDate.year,
                             startDate.month,
@@ -126,7 +128,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                           createAt: DateTime.now(),
                           startAt: startAt,
                           expireAt: expireAt,
-                          code: code,
+                          code: code ?? "",
                           members: [],
                           category: dropdownValue ?? "Politics and Governance",
                           creatorUserName: GetStorage().read("loged-user"),

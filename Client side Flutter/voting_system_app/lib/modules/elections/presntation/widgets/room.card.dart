@@ -5,14 +5,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 
 class RoomCard extends StatelessWidget {
-  RoomCard(
-      {super.key,
-      required this.saveRoom,
-      required this.onClick,
-      required this.room});
+  RoomCard({
+    super.key,
+    required this.saveRoom,
+    required this.onClick,
+    required this.isSaved,
+    required this.room,
+  });
   void Function()? saveRoom;
   void Function()? onClick;
   final Room room;
+  bool isSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,11 @@ class RoomCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20)),
                     child: IconButton(
                       onPressed: saveRoom,
-                      icon: const Icon(FontAwesomeIcons.bookmark),
+                      icon: Icon(
+                        isSaved
+                            ? FontAwesomeIcons.solidBookmark
+                            : FontAwesomeIcons.bookmark,
+                      ),
                     ),
                   ),
                 )
