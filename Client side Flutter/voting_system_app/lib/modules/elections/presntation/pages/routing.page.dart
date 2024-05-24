@@ -21,7 +21,7 @@ class _RoutingPageState extends State<RoutingPage> {
     HomePage(),
     SavedRooms(rooms: TestData.savedRooms),
     CreateRoomPage(),
-    const RoomsPage(
+    RoomsPage(
       rooms: [],
     ),
     const ProfilePage(),
