@@ -24,7 +24,7 @@ class _RoutingPageState extends State<RoutingPage> {
     RoomsPage(
       rooms: [],
     ),
-    const ProfilePage(),
+    ProfilePage(),
   ];
   List<Icon> items = const [
     Icon(Icons.home, color: Colors.white, size: 37),
