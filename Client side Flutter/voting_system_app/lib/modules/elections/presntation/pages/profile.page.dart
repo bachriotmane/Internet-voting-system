@@ -44,9 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
           userInfo.username = data['username'].toString();
           userInfo.firstName = data['nom'].toString();
           userInfo.lastName = data['prenom'].toString();
-          userInfo.email = data['phoneNumber'].toString();
+          userInfo.email = data['email'].toString();
           // print(userInfo.email);
-          userInfo.phoneNumber = data['username'].toString();
+          userInfo.phoneNumber = data['phoneNumber'].toString();
           userInfo.CIN = data['CIN'].toString();
           userInfo.age = data['age'].toString();
         });
