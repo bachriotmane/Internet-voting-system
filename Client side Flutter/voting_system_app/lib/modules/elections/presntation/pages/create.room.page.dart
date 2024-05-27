@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
@@ -76,13 +77,49 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
         buildWhen: (previews, current) => current is! AddroomActionState,
         listener: (context, state) {
           if (state is AddroomRoomAddedSuccessfullyActionState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Room added Successfully! code : $code"),
-              backgroundColor: Colors.green,
-            ));
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //   content: Text("Room added Successfully! code : $code"),
+            //   backgroundColor: Colors.green,
+            // ));
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Copy Text'),
+                  content: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(code.toString(), style: TextStyle(fontSize: 25)),
+                      SizedBox(height: 20),
+                      IconButton(
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: code.toString()));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Text copied to clipboard'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.copy),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            );
 
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (c) => RoutingPage()));
+            // Navigator.pushReplacement(
+            // context, MaterialPageRoute(builder: (c) => RoutingPage()));
           }
         },
         builder: (context, state) {

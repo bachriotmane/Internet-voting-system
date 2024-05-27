@@ -647,3 +647,9 @@
 //     );
 //   }
 // }
+
+int add(int a, int b) {
+  return a + b;
+}
+
+int addThreeNumbers(int a, int b, int c) => a + b + c;

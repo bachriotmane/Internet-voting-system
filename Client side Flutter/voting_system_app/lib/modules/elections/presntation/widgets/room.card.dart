@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 
-class RoomCard extends StatelessWidget {
+class RoomCard extends StatefulWidget {
   RoomCard({
     super.key,
     required this.saveRoom,
@@ -12,15 +12,27 @@ class RoomCard extends StatelessWidget {
     required this.isSaved,
     required this.room,
   });
-  void Function()? saveRoom;
+  void Function() saveRoom;
   void Function()? onClick;
   final Room room;
   bool isSaved;
 
   @override
+  State<RoomCard> createState() => _RoomCardState();
+}
+
+class _RoomCardState extends State<RoomCard> {
+  late bool _isSaved;
+  @override
+  void initState() {
+    super.initState();
+    _isSaved = widget.isSaved;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClick,
+      onTap: widget.onClick,
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration:
@@ -53,15 +65,15 @@ class RoomCard extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20)),
                     child: IconButton(
-                      onPressed: saveRoom,
+                      onPressed: widget.saveRoom,
                       icon: Icon(
-                        isSaved
+                        _isSaved
                             ? FontAwesomeIcons.solidBookmark
                             : FontAwesomeIcons.bookmark,
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             )),
             //!Other Info
@@ -75,7 +87,7 @@ class RoomCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          room.roomTitle,
+                          widget.room.roomTitle,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
@@ -95,7 +107,7 @@ class RoomCard extends StatelessWidget {
                                       AssetImage("assets/homepage/profile.png"),
                                 ),
                                 SizedBox(width: 5),
-                                Text(room.creatorUserName,
+                                Text(widget.room.creatorUserName,
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
@@ -117,7 +129,7 @@ class RoomCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  room.members.length.toString(),
+                                  widget.room.members.length.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,

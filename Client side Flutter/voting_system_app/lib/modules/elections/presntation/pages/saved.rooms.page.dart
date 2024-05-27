@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:voting_system_app/common/utils/dummydata/dummy.data.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/room.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/room.card.aramali.dart';
 
 class SavedRooms extends StatelessWidget {
@@ -20,10 +22,16 @@ class SavedRooms extends StatelessWidget {
         ),
         body: Column(
           children: List.generate(
-            rooms.length,
+            TestData.savedRooms.length,
             (index) => RoomCardBar(
-              room: rooms[index],
-              onTap: () {},
+              room: TestData.savedRooms[index],
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (c) =>
+                            RoomPage(room: TestData.savedRooms[index])));
+              },
             ),
           ),
         ));

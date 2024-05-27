@@ -42,14 +42,20 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 10),
             BlocConsumer<HomeBloc, HomeState>(
               bloc: homeBloc,
-              listenWhen: (prev, curr) => curr is HomeActionState,
-              buildWhen: (prev, curr) => curr is! HomeActionState,
+              listenWhen: (prev, current) => current is HomeActionState,
+              buildWhen: (prev, current) => current is! HomeActionState,
               listener: (context, state) {
                 if (state is HomeNavigateToCategoryRoomsPageActionsState) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (c) => RoomsPage(rooms: state.rooms)));
+                }
+                if (state is HomeRoomSavedSuccesfullyActionState) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Room saved !"),
+                    backgroundColor: Colors.green,
+                  ));
                 }
               },
               builder: (context, state) {
@@ -265,9 +271,14 @@ class HomePage extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
       child: CarouselSlider(
         items: List.generate(rooms.length, (index) {
-          print(TestData.savedRooms.contains(rooms[index]));
+          bool isSaved = false;
+          for (Room r in TestData.savedRooms) {
+            if (r.roomId == rooms[index].roomId) {
+              isSaved = true;
+            }
+          }
           return RoomCard(
-            isSaved: TestData.savedRooms.contains(rooms[index]),
+            isSaved: isSaved,
             room: rooms[index],
             onClick: () {
               Navigator.push(
@@ -278,8 +289,8 @@ class HomePage extends StatelessWidget {
                           )));
             },
             saveRoom: () {
-              TestData.savedRooms.add(rooms[index]);
-              homeBloc.add(HomeInitialEvent());
+              homeBloc
+                  .add(HomeSaveButtonClickedEvent(clickedRoom: rooms[index]));
             },
           );
         }),
