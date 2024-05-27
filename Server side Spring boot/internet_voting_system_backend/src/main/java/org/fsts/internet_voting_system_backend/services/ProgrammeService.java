@@ -16,4 +16,6 @@ public interface ProgrammeService {
     List<Programme> findProgrammeByKeywordAndRoom(
             String keyword, Room programmeRoom
     );
+
+    public Programme updateProgramme(Programme programme);
 }

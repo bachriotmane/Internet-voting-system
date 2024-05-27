@@ -18,7 +18,7 @@ public interface ProgrammeRepository extends JpaRepository<Programme, String> {
             String keyword, Room programmeRoom
     );
 
-    Optional<List<Programme>> findByProgrammeRoomRoomId( String roomId);
+    Optional<List<Programme>> findByProgrammeRoomRoomId(String roomId);
 
 
 }

@@ -9,7 +9,8 @@ public record ProgrammeDTO(
         String programmeTitle,
         String programmeDescription,
         String programmeRoom,
-        LocalDate creationDate,
-        List<String> voteIds
+        Date creationDate,
+        List<String> voteIds,
+        String creatorUserName
 ) {
 }

@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.DTOs.RoomDTO;
 import org.fsts.internet_voting_system_backend.entities.Programme;
 import org.fsts.internet_voting_system_backend.entities.Room;
+import org.fsts.internet_voting_system_backend.entities.RoomCategory;
 import org.fsts.internet_voting_system_backend.entities.UserApp;
 import org.fsts.internet_voting_system_backend.mappers.RoomMapper;
+import org.fsts.internet_voting_system_backend.repositories.RoomCategoryRepository;
+import org.fsts.internet_voting_system_backend.repositories.UserAppRepository;
 import org.fsts.internet_voting_system_backend.services.ProgrammeService;
 import org.fsts.internet_voting_system_backend.services.UserService;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,8 @@ import java.util.List;
 public class RoomMapperImpl implements RoomMapper {
     private final UserService userService;
     private final ProgrammeService programmeService;
+    private final RoomCategoryRepository roomCategoryRepository;
+    private final UserAppRepository userAppRepository;
 
 
 
@@ -32,9 +37,11 @@ public class RoomMapperImpl implements RoomMapper {
             roomMembers.add(userService.getUserById(userId).get());
         });
 
+        RoomCategory roomCategory = roomCategoryRepository.findRoomCategoriesByLabel(roomDto.category());
+
         return  Room.builder()
                 .roomId(roomDto.roomId())
-                .roomCreator(userService.getUserById(roomDto.roomCreatorId()).get())
+                .roomCreator(userAppRepository.findUserAppByUsername(roomDto.roomCreator()))
                 .roomDescription(roomDto.roomDescription())
                 .title(roomDto.title())
                 .startAt(roomDto.startAt())
@@ -43,6 +50,7 @@ public class RoomMapperImpl implements RoomMapper {
                 .programmeList(roomProgrammes)
                 .roomMembers(roomMembers)
                 .code(roomDto.code())
+                .roomCategory(roomCategory)
                 .build();
     }
 
@@ -63,11 +71,12 @@ public class RoomMapperImpl implements RoomMapper {
                 .programmeListId(roomProgrammeIds)
                 .createAt(room.getCreateAt())
                 .expireAt(room.getExpireAt())
-                .roomCreatorId(room.getRoomCreator().getUserId())
+                .roomCreator(room.getRoomCreator().getUsername())
                 .roomDescription(room.getRoomDescription())
                 .roomMembersId(roomMemberIds)
                 .startAt(room.getStartAt())
                 .title(room.getTitle())
+                .category(room.getRoomCategory()!=null ?  room.getRoomCategory().getLabel() : null)
                 .build();
 
     }

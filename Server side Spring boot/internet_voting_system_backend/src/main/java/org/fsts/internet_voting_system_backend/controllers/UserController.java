@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +34,18 @@ public class UserController {
         else{
             return new ResponseEntity<>("user not found !",HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable String id)
+    {
+        Optional<UserApp> userApp = userAppRepository.findById(id);
+        if(userApp.isPresent()){
+            return ResponseEntity.ok(userMapper.fromEntity(userApp.get()));
+        }else {
+            return ResponseEntity.badRequest().body(Map.of("message", "user not found"));
+        }
+
     }
     @PutMapping("/update")
     public ResponseEntity<?> updateUserInfo(@RequestBody UserDTO userDTO)

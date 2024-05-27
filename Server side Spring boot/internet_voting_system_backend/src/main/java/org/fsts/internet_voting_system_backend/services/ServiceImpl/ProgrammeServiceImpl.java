@@ -42,4 +42,9 @@ public class ProgrammeServiceImpl implements ProgrammeService {
     public List<Programme> findProgrammeByKeywordAndRoom(String keyword, Room programmeRoom) {
         return programmeRepository.findByProgrammeTitleContainingIgnoreCaseAndProgrammeRoom(keyword,programmeRoom);
     }
+
+    @Override
+    public Programme updateProgramme(Programme programme) {
+        return programmeRepository.save(programme);
+    }
 }

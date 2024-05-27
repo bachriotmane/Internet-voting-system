@@ -3,6 +3,7 @@ package org.fsts.internet_voting_system_backend.controllers;
 
 import lombok.AllArgsConstructor;
 import org.fsts.internet_voting_system_backend.DTOs.RoomDTO;
+import org.fsts.internet_voting_system_backend.DTOs.VoteDTO;
 import org.fsts.internet_voting_system_backend.entities.Room;
 import org.fsts.internet_voting_system_backend.mappers.RoomMapper;
 import org.fsts.internet_voting_system_backend.services.RoomService;
@@ -39,6 +40,7 @@ public class RoomController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getRoomById(@PathVariable String id ){
          Optional<Room>  room = roomService.getRoomById(id);
+        System.out.println(room.get().getProgrammeList().size());
 
         if(room.isPresent())
         {
@@ -99,4 +101,11 @@ public class RoomController {
         return new ResponseEntity<>(roomDTO,HttpStatus.OK);
 
     }
+    @GetMapping("/category/{category}")
+    public List<RoomDTO> getRoomsByCategory(@PathVariable String category){
+        System.out.println(category);
+        return roomService.getRoomsByCategory(category).stream().map(roomMapper::fromEntity).collect(Collectors.toList());
+    }
+
+
 }

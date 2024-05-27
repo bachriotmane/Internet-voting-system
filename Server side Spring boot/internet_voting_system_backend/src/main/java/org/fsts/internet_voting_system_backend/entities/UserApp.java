@@ -32,10 +32,10 @@ public class UserApp implements UserDetails {
     private String CIN;
     private int age;
     private boolean isEnabled;
-    @ManyToMany(mappedBy = "roomMembers")
+    @ManyToMany(mappedBy = "roomMembers", fetch = FetchType.EAGER)
     private List<Room> joiningRooms;
 
-    @OneToMany(mappedBy = "roomCreator")
+    @OneToMany(mappedBy = "roomCreator", fetch = FetchType.EAGER)
     private List<Room> createdRooms;
 
     @ManyToMany(fetch = FetchType.EAGER)

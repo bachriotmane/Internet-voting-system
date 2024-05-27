@@ -28,6 +28,9 @@ public class Room {
     @ManyToOne
     private UserApp roomCreator;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Programme> programmeList;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private RoomCategory roomCategory;
 }

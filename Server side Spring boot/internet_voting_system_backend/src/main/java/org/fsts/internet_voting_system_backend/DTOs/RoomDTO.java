@@ -16,7 +16,8 @@ public record RoomDTO(
                  Date expireAt,
                  String code,
                  List<String> roomMembersId,
-                 String roomCreatorId,
-                 List<String> programmeListId
+                 String roomCreator,
+                 List<String> programmeListId,
+                String category
 ) {
 }

@@ -15,8 +15,8 @@ public class Vote {
     @Id
     private String voteId;
     private Date dateVote;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserApp voter;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Programme programme;
 }

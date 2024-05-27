@@ -39,16 +39,43 @@ public class PrgrammeController {
         }
         return new ResponseEntity<>("No programme found with id " + id, HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/alls")
+    public ResponseEntity<?> getAllProgramms() {
+        List<ProgrammeDTO> programmeDTOS = new ArrayList<>();
+        for(Programme programme : programmeService.getAllProgrammes()){
+            programmeDTOS.add(programmeMapper.fromEntity(programme));
+        }
+        return ResponseEntity.ok(programmeDTOS);
+    }
+//    @GetMapping("/{roomId}")
+//    public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId) {
+//        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
+//
+//        List<ProgrammeDTO> programmeDTOS = new ArrayList<>();
+//        if (programmes.isPresent() && !programmes.get().isEmpty()) {
+//            System.out.println(programmes.get().size());
+//            programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
+//            return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);
+//        }
+//        return ResponseEntity.ok(programmeDTOS);
+//    }
+
     @GetMapping("/{roomId}")
     public ResponseEntity<?> getProgrammesByRoom(@PathVariable("roomId") String roomId) {
-        Optional<List<Programme>> programmes = roomService.getProgrammesByRoom(roomId);
-
-        if (programmes.isPresent() && !programmes.get().isEmpty()) {
-            List<ProgrammeDTO> programmeDTOS = programmes.get().stream().map(programmeMapper::fromEntity).toList();
-            return new ResponseEntity<>(programmeDTOS, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("there no programme in this room *_*", HttpStatus.NOT_FOUND);
+        Optional<Room> room = roomService.getRoomById(roomId);
+        List<ProgrammeDTO> programmeDTOS = new ArrayList<>();
+        if(room.isPresent()){
+            List<Programme> programmes = room.get().getProgrammeList();
+            for(Programme programme : programmes){
+                System.out.println(programme.getVoteList().size());
+            }
+            for(Programme programme : programmes){
+                programmeDTOS.add(programmeMapper.fromEntity(programme));
+            }
+            return ResponseEntity.ok(programmeDTOS);
         }
+        return ResponseEntity.ok(programmeDTOS);
     }
 
     @GetMapping("/byDateAndRoom/{roomId}")
@@ -84,5 +111,12 @@ public class PrgrammeController {
         if (!programmes.isEmpty())
             programmeDTOs = programmes.stream().map(programmeMapper::fromEntity).toList();
         return new ResponseEntity<>(programmeDTOs, HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    public ProgrammeDTO createNewProgramme(@RequestBody ProgrammeDTO programmeDTO){
+        System.out.println(programmeDTO);
+        Programme p = programmeService.saveProgramme(programmeMapper.fromDTO(programmeDTO));
+        return programmeMapper.fromEntity(p);
     }
 }
