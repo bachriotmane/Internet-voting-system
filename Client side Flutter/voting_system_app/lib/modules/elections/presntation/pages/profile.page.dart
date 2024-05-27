@@ -1,11 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:voting_system_app/common/utils/constants/colors.constants.dart';
+import 'package:voting_system_app/common/services/auth.service.dart';
+import 'package:voting_system_app/common/utils/constants/app.constants.dart';
 import 'package:voting_system_app/modules/authentication/presentation/pages/login.page.dart';
+import 'package:voting_system_app/modules/elections/domain/entities/user.dart';
+import 'package:voting_system_app/modules/elections/presntation/widgets/row_user_info.dart';
+import 'package:dio/dio.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+// ignore: must_be_immutable
+class ProfilePage extends StatefulWidget {
+  ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final _getStorage = GetStorage();
+  UserInfo userInfo = UserInfo(
+      username: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      CIN: '',
+      age: '');
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserInfo();
+  }
+
+  Future<void> fetchUserInfo() async {
+    Dio _dio = serviceLocator<Dio>();
+    try {
+      final response = await _dio
+          .get("${AppConstants.apiUrl}users/${_getStorage.read("loged-user")}");
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data;
+        print(response.data.toString());
+        setState(() {
+          userInfo.username = data['username'].toString();
+          userInfo.firstName = data['nom'].toString();
+          userInfo.lastName = data['prenom'].toString();
+          userInfo.email = data['email'].toString();
+          // print(userInfo.email);
+          userInfo.phoneNumber = data['phoneNumber'].toString();
+          userInfo.CIN = data['CIN'].toString();
+          userInfo.age = data['age'].toString();
+        });
+      } else {
+        throw Exception('Failed to load user info');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +105,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Abelkarim idrissi",
+                      "${userInfo.firstName} ${userInfo.lastName}",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.white,
@@ -64,7 +115,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     SizedBox(height: 6),
                     Text(
-                      "idrissiabdelkarim@gmail.com",
+                      userInfo.email,
                       style: TextStyle(
                         fontSize: 11,
                         color: Colors.white,
@@ -80,7 +131,6 @@ class ProfilePage extends StatelessWidget {
               left: 30,
               right: 30,
               child: Container(
-                  // height: 400,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -90,46 +140,54 @@ class ProfilePage extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 5,
                         blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _buildRowInfo(context, "Username", "18"),
-                      _buildRowInfo(context, "First Name", "18"),
-                      _buildRowInfo(context, "Last Name", "18"),
-                      _buildRowInfo(context, "Email", "idrissi@gmail.com"),
-                      _buildRowInfo(context, "Phone Number", "066-657-000"),
-                      _buildRowInfo(context, "CIN", "W0000"),
-                      _buildRowInfo(context, "Age", "18"),
-                      GestureDetector(
-                        onTap: () {
-                          GetStorage().erase().then((value) {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (_) => LoginPage()));
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Text(
-                            "Log out",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
+                      SizedBox(height: 15),
+                      RowUserProfile(
+                          info: "Username", value: userInfo.username),
+                      RowUserProfile(
+                          info: "First Name", value: userInfo.firstName),
+                      RowUserProfile(
+                          info: "Last Name", value: userInfo.lastName),
+                      RowUserProfile(info: "Email", value: userInfo.email),
+                      RowUserProfile(
+                          info: "Phone Number", value: userInfo.phoneNumber),
+                      RowUserProfile(info: "CIN", value: userInfo.CIN),
+                      RowUserProfile(info: "Age", value: userInfo.age),
+                      SizedBox(height: 15),
                     ],
                   )),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: Container(
+                child: GestureDetector(
+                  onTap: () {
+                    GetStorage().erase().then((value) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (_) => LoginPage()));
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    child: Image.asset(
+                      'assets/profile_page/logout.png',
+                      color: Colors.white,
+                      width: 44,
+                      height: 44,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
             ),
             //   Positioned(
             //       left: 30,
@@ -150,41 +208,6 @@ class ProfilePage extends StatelessWidget {
             //         ),
             //       )))
           ],
-        ),
-      ),
-    );
-  }
-
-  _buildRowInfo(context, String info, String value) {
-    return Container(
-      child: Row(
-        children: [
-          Text(
-            info,
-            style: TextStyle(
-              fontSize: 13,
-              fontFamily: 'Roboto',
-              // fontWeight: FontWeight.bold,
-              color: AppColor.principaleLightColor,
-            ),
-          ),
-          Spacer(),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 13,
-            ),
-          ),
-        ],
-      ),
-      height: 40,
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.black,
-            width: 0.5,
-            style: BorderStyle.solid,
-          ),
         ),
       ),
     );

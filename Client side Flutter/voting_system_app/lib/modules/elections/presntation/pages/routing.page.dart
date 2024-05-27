@@ -21,10 +21,10 @@ class _RoutingPageState extends State<RoutingPage> {
     HomePage(),
     SavedRooms(rooms: TestData.savedRooms),
     CreateRoomPage(),
-    const RoomsPage(
+    RoomsPage(
       rooms: [],
     ),
-    const ProfilePage(),
+    ProfilePage(),
   ];
   List<Icon> items = const [
     Icon(Icons.home, color: Colors.white, size: 37),
