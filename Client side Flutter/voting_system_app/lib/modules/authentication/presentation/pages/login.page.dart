@@ -68,8 +68,8 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Image(
                             height: MediaQuery.of(context).size.height * .17,
-                            image: const AssetImage(
-                                "assets/auth-assets/register.png"),
+                            image:
+                                const AssetImage("assets/icons/app_logo.png"),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * .01,

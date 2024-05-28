@@ -51,7 +51,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       HomeCategoryClickedEvent event, Emitter<HomeState> emit) async {
     final resp = await serviceLocatorElection<RoomRepository>()
         .getRoomsByCategory(event.category);
-    print("Sucess");
     resp.fold(
       (l) {
         emit(HomeErrorState(message: l.message));

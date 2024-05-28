@@ -23,7 +23,7 @@ class RoomModel extends Room {
         "expireAt": expireAt.toIso8601String(),
         "code": code,
         "roomMembersId": members,
-        "roomCreator": "moha123",
+        "roomCreator": creatorUserName,
         "programmeListId": programmes,
         "category": category,
       };

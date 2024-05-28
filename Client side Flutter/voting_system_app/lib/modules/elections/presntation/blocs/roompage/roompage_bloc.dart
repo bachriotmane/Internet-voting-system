@@ -11,7 +11,7 @@ import 'package:voting_system_app/modules/elections/domain/entities/programme.da
 import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
 import 'package:voting_system_app/modules/elections/domain/repositories/programme.repository.dart';
 import 'package:voting_system_app/modules/elections/domain/repositories/vote.repository.dart';
-
+import 'package:get_storage/get_storage.dart';
 part 'roompage_event.dart';
 part 'roompage_state.dart';
 
@@ -23,7 +23,8 @@ class RoompageBloc extends Bloc<RoompageEvent, RoompageState> {
 
   FutureOr<void> roomPageInitiaEvent(
       RoomPageInitiaEvent event, Emitter<RoompageState> emit) async {
-    String loggedUser = "moha123";
+    // String loggedUser = "moha123";
+    String loggedUser = GetStorage().read("loged-user");
     emit(RoomPageLoadingState());
     final resp = await serviceLocatorElection<ProgrammeRepository>()
         .getRoomProgrammes(event.currentRoomId);
@@ -55,7 +56,8 @@ class RoompageBloc extends Bloc<RoompageEvent, RoompageState> {
 
   FutureOr<void> roompageVoteButtonClickedEvent(
       RoompageVoteButtonClickedEvent event, Emitter<RoompageState> emit) async {
-    String loggedUser = "moha123";
+    // String loggedUser = "moha123";
+    String loggedUser = GetStorage().read("loged-user");
     emit(RoomPageLoadingState());
     //! Get votes for this programme
     //! If the current user already vote ==> update

@@ -158,6 +158,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                             endDate.day,
                             endTime.hour,
                             endTime.minute);
+                        print("Loged : " + GetStorage().read("loged-user"));
                         Room room = Room(
                           roomId: "",
                           roomTitle: titleController.text,

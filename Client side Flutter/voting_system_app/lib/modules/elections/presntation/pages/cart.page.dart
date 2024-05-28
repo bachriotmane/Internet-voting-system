@@ -1,75 +1,80 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 
-class VotePieChart extends StatefulWidget {
+class CartPage extends StatefulWidget {
+  const CartPage({Key? key}) : super(key: key);
+
   @override
-  _VotePieChartState createState() => _VotePieChartState();
+  State<CartPage> createState() => _MyHomePageState();
 }
 
-class _VotePieChartState extends State<VotePieChart> {
-  // Example vote data for programs
-  final Map<String, double> programVotes = {
-    "Program A": 40,
-    "Program B": 30,
-    "Program C": 20,
-    "Program D": 10,
+class _MyHomePageState extends State<CartPage> {
+// Data for the pie chart
+  Map<String, double> dataMap = {
+    "Programme 1": 60,
+    "Programme 2": 30,
+    "Programme 3": 10,
   };
+
+// Colors for each segment
+// of the pie chart
+  List<Color> colorList = [
+    const Color(0xff3EE094),
+    const Color(0xff3398F6),
+    const Color(0xffFE9539)
+  ];
+
+// List of gradients for the
+// background of the pie chart
+  final gradientList = <List<Color>>[
+    [
+      Color.fromRGBO(223, 250, 92, 1),
+      Color.fromRGBO(129, 250, 112, 1),
+    ],
+    [
+      Color.fromRGBO(129, 182, 205, 1),
+      Color.fromRGBO(91, 253, 199, 1),
+    ],
+    [
+      Color.fromRGBO(175, 63, 62, 1.0),
+      Color.fromRGBO(254, 154, 92, 1),
+    ]
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dynamic Pie Chart'),
+        centerTitle: true,
+        title: const Text("Vote results"),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 1,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Center(
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width * .9,
           child: PieChart(
-            PieChartData(
-              sections: showingSections(),
-              centerSpaceRadius: 40,
-              borderData: FlBorderData(
-                show: false,
-              ),
-            ),
+            dataMap: dataMap,
+            colorList: colorList,
+            chartRadius: MediaQuery.of(context).size.width / 2,
+            ringStrokeWidth: 24,
+            animationDuration: const Duration(seconds: 3),
+            chartValuesOptions: const ChartValuesOptions(
+                showChartValues: true,
+                showChartValuesOutside: true,
+                showChartValuesInPercentage: true,
+                showChartValueBackground: false),
+            legendOptions: const LegendOptions(
+                showLegends: true,
+                legendShape: BoxShape.rectangle,
+                legendTextStyle: TextStyle(fontSize: 15),
+                legendPosition: LegendPosition.bottom,
+                showLegendsInRow: true),
+            gradientList: gradientList,
           ),
         ),
       ),
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    double totalVotes = programVotes.values.reduce(
-      (a, b) => a + b,
-    );
-    return programVotes.entries.map((entry) {
-      final double percentage = (entry.value / totalVotes) * 100;
-      return PieChartSectionData(
-        color: _getColor(entry.key),
-        value: entry.value,
-        title: '${percentage.toStringAsFixed(1)}%',
-        radius: 50,
-        titleStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      );
-    }).toList();
-  }
-
-  Color _getColor(String programName) {
-    switch (programName) {
-      case "Program A":
-        return Colors.red;
-      case "Program B":
-        return Colors.blue;
-      case "Program C":
-        return Colors.green;
-      case "Program D":
-        return Colors.yellow;
-      default:
-        return Colors.grey;
-    }
   }
 }

@@ -50,6 +50,9 @@ dependencies:
   google_fonts:
   fl_chart: ^0.68.0
   flutter_otp_text_field: ^1.1.3+2
+  flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.13.1
+  pie_chart: ^5.4.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +80,7 @@ flutter:
     - assets/auth-assets/
     - assets/homepage/
     - assets/profile_page/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

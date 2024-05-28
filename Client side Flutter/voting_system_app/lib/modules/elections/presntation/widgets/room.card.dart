@@ -1,8 +1,17 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
+
+const List<String> images = [
+  "assets/homepage/v1.jpg",
+  "assets/homepage/v2.png",
+  "assets/homepage/v3.jpg",
+  "assets/homepage/vv.png",
+];
 
 class RoomCard extends StatefulWidget {
   RoomCard({
@@ -53,7 +62,7 @@ class _RoomCardState extends State<RoomCard> {
                 child: Stack(
               children: [
                 Image.asset(
-                  "assets/homepage/vv.png",
+                  images[(Random().nextInt(images.length - 1))],
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width,
                 ),
@@ -129,7 +138,7 @@ class _RoomCardState extends State<RoomCard> {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  widget.room.members.length.toString(),
+                                  (Random().nextInt(7) + 1).toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,

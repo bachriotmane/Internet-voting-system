@@ -12,6 +12,7 @@ import 'package:voting_system_app/modules/elections/presntation/blocs/home_bloc/
 
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.dart';
+import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.simpl.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/verfication.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.category.widget.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.divison.text.dart';
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (c) => RoomsPage(rooms: state.rooms)));
+                          builder: (c) => SimpleRoomsPage(rooms: state.rooms)));
                 }
                 if (state is HomeRoomSavedSuccesfullyActionState) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -3,14 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:voting_system_app/common/services/election.dart';
 import 'package:voting_system_app/modules/authentication/presentation/widgets/textfiled.custom.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/programme.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
-import 'package:voting_system_app/modules/elections/domain/entities/vote.dart';
-import 'package:voting_system_app/modules/elections/domain/repositories/vote.repository.dart';
-import 'package:voting_system_app/modules/elections/presntation/blocs/addroom/addroom_bloc.dart';
 import 'package:voting_system_app/modules/elections/presntation/blocs/roompage/roompage_bloc.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/cart.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/programme.page.dart';
@@ -121,11 +116,9 @@ class _RoomPageState extends State<RoomPage> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (c) =>
-                                                    VotePieChart()));
+                                                builder: (c) => CartPage()));
                                       },
-                                      icon:
-                                          const Icon(FontAwesomeIcons.bookmark),
+                                      icon: const Icon(FontAwesomeIcons.info),
                                     ),
                                   ),
                                 ],
