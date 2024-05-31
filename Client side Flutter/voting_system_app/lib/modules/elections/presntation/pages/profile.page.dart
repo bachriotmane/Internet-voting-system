@@ -16,7 +16,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _getStorage = GetStorage();
   UserInfo userInfo = UserInfo(
       username: '',
       firstName: '',

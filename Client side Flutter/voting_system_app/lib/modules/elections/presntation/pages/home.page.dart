@@ -11,7 +11,6 @@ import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/presntation/blocs/home_bloc/home_bloc.dart';
 
 import 'package:voting_system_app/modules/elections/presntation/pages/notifications.page.dart';
-import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/rooms.page.simpl.dart';
 import 'package:voting_system_app/modules/elections/presntation/pages/verfication.page.dart';
 import 'package:voting_system_app/modules/elections/presntation/widgets/custom.category.widget.dart';

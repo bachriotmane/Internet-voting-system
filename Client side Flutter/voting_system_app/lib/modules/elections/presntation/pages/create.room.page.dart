@@ -10,7 +10,6 @@ import 'package:voting_system_app/modules/authentication/presentation/widgets/bu
 import 'package:voting_system_app/modules/authentication/presentation/widgets/textfiled.custom.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/presntation/blocs/addroom/addroom_bloc.dart';
-import 'package:voting_system_app/modules/elections/presntation/pages/routing.page.dart';
 
 String generateUniqueCode() {
   Random random = Random();

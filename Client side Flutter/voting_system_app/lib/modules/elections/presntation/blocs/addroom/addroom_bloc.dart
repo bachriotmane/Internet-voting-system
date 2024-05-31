@@ -6,7 +6,6 @@ import 'package:voting_system_app/common/services/election.dart';
 import 'package:voting_system_app/modules/elections/data/models/room.model.dart';
 import 'package:voting_system_app/modules/elections/domain/entities/room.dart';
 import 'package:voting_system_app/modules/elections/domain/repositories/room.repository.dart';
-import 'package:get_storage/get_storage.dart';
 part 'addroom_event.dart';
 part 'addroom_state.dart';
 
