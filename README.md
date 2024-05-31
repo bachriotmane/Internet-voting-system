@@ -31,9 +31,11 @@ The Flutter part of the project is built using Clean Architecture to ensure ease
 
 ## Screenshots
 
-*Include here the screenshots of your application.*
+_Include here the screenshots of your application._
 
-![Screenshot 1](path/to/screenshot1.png)
-![Screenshot 2](path/to/screenshot2.png)
-![Screenshot 3](path/to/screenshot3.png)
-
+![Screenshot 1](assets/image2.png)
+![Screenshot 2](assets/image3.png)
+![Screenshot 3](assets/image4.png)
+![Screenshot 4](assets/image5.png)
+![Screenshot 5](assets/image6.png)
+![Screenshot 6](assets/image7.png)
